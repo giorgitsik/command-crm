@@ -66,15 +66,17 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .form-input:focus{border-color:var(--accent)}
 .form-select{width:100%;height:32px;border:1px solid var(--border);border-radius:6px;padding:0 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--surface);outline:none}
 .badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.2px}
-.badge-intake{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple)40}
-.badge-preapproved{background:var(--accent-light);color:var(--accent);border:1px solid var(--accent)40}
-.badge-submitted{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-mid)}
-.badge-condapproved{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.badge-intake{background:#e0f2fe;color:#0284c7;border:1px solid #7dd3fc}
+.badge-preapproved{background:#ecfdf5;color:#16a34a;border:1px solid #86efac}
+.badge-submitted{background:#fef9c3;color:#ca8a04;border:1px solid #fde047}
+.badge-condapproved{background:#dbeafe;color:#2563eb;border:1px solid #93c5fd}
+.badge-disclosed{background:#fef3c7;color:#92400e;border:1px solid #d97706}
+.badge-loansetup{background:#f3e8ff;color:#7c3aed;border:1px solid #c4b5fd}
 .badge-resubmittal{background:#fff3e0;color:#e07b00;border:1px solid #ffe082}
-.badge-docsout{background:#ecfdf5;color:#0e9f6e;border:1px solid #a7f3d0}
-.badge-funded{background:#ecfdf5;color:#059669;border:1px solid #6ee7b7}
-.badge-brokerpaid{background:var(--bg);color:var(--muted);border:1px solid var(--border)}
-.badge-close{background:var(--green-bg);color:var(--green);border:1px solid var(--green-mid)}
+.badge-docsout{background:#f3e8ff;color:#7c3aed;border:1px solid #c4b5fd}
+.badge-funded{background:#f3e8ff;color:#7c3aed;border:1px solid #c4b5fd}
+.badge-brokerpaid{background:#f3e8ff;color:#7c3aed;border:1px solid #c4b5fd}
+.badge-close{background:#f3e8ff;color:#7c3aed;border:1px solid #c4b5fd}
 .badge-nurture{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
 .role-badge{display:inline-flex;align-items:center;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:600}
 .role-lo{background:var(--accent-light);color:var(--accent)}
@@ -316,7 +318,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .state-badge-dot{width:6px;height:6px;border-radius:50%;position:absolute;top:4px;right:4px}
 /* Team */
 .team-table{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.team-head,.team-row{display:grid;grid-template-columns:2fr 90px 90px 1fr 80px 80px;gap:10px;padding:9px 14px;align-items:center}
+.team-head,.team-row{display:grid;grid-template-columns:2fr 90px 90px 90px 1fr 80px 80px;gap:10px;padding:9px 14px;align-items:center}
 .team-head{background:var(--surface2);border-bottom:1px solid var(--border)}
 .team-row{border-bottom:1px solid var(--border);transition:background .1s}
 .team-row:last-child{border-bottom:none}
@@ -489,7 +491,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <input type="text" id="globalSearch" placeholder="Search leads, loans, contacts..." oninput="globalSearchFn(this.value)" onkeydown="if(event.key==='Escape'){this.value='';globalSearchFn('')}" autocomplete="off">
       <div id="globalSearchResults" style="display:none;position:absolute;top:36px;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.3);max-height:320px;overflow-y:auto"></div>
     </div>
-    <button class="btn btn-ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>Filter</button>
+    <button class="btn btn-ghost" onclick="openModal('leadsFilterModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>Filter</button>
     <button class="btn btn-primary" onclick="openNewLeadModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Lead</button>
   </div>
   <div class="tab-bar" id="tabBar">
@@ -509,12 +511,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
         <div>
           <div class="section-header"><span class="section-title">Pipeline Overview</span><button class="btn btn-ghost btn-sm">View All</button></div>
           <div class="pipeline-row">
-            <div class="pipeline-stage"><div class="stage-bar" style="background:#94a3b8"></div><div class="stage-name">App Intake</div><div class="stage-count">15</div><div class="stage-value">$4.0M</div></div>
-            <div class="pipeline-stage"><div class="stage-bar" style="background:var(--purple)"></div><div class="stage-name">Pre-Approved</div><div class="stage-count">12</div><div class="stage-value">$3.1M</div></div>
-            <div class="pipeline-stage"><div class="stage-bar" style="background:var(--accent)"></div><div class="stage-name">Submitted UW</div><div class="stage-count">9</div><div class="stage-value">$2.3M</div></div>
-            <div class="pipeline-stage"><div class="stage-bar" style="background:var(--amber)"></div><div class="stage-name">Cond. Approved</div><div class="stage-count">7</div><div class="stage-value">$1.8M</div></div>
-            <div class="pipeline-stage"><div class="stage-bar" style="background:#b45309"></div><div class="stage-name">Resubmittal</div><div class="stage-count">5</div><div class="stage-value">$1.2M</div></div>
-            <div class="pipeline-stage"><div class="stage-bar" style="background:var(--green)"></div><div class="stage-name">Clear to Close</div><div class="stage-count">3</div><div class="stage-value">$780K</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#38bdf8"></div><div class="stage-name">App Intake</div><div class="stage-count">15</div><div class="stage-value">$4.0M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#16a34a"></div><div class="stage-name">Pre-Approved</div><div class="stage-count">12</div><div class="stage-value">$3.1M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#ca8a04"></div><div class="stage-name">Submitted UW</div><div class="stage-count">9</div><div class="stage-value">$2.3M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#2563eb"></div><div class="stage-name">Cond. Approved</div><div class="stage-count">7</div><div class="stage-value">$1.8M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#92400e"></div><div class="stage-name">Disclosed</div><div class="stage-count">6</div><div class="stage-value">$1.5M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#7c3aed"></div><div class="stage-name">Loan Setup</div><div class="stage-count">5</div><div class="stage-value">$1.2M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#7c3aed"></div><div class="stage-name">Clear to Close</div><div class="stage-count">3</div><div class="stage-value">$780K</div></div>
           </div>
         </div>
         <div>
@@ -570,7 +573,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
             <div class="filter-chip" onclick="setLeadsFilter('intake',this)"><span class="stage-dot" style="background:var(--purple)"></span>App Intake</div>
             <div class="filter-chip" onclick="setLeadsFilter('preapproved',this)"><span class="stage-dot" style="background:var(--accent)"></span>Pre-Approved</div>
             <div class="filter-chip" onclick="setLeadsFilter('submitted',this)"><span class="stage-dot" style="background:var(--amber)"></span>Submitted to UW</div>
-            <div class="filter-chip" onclick="setLeadsFilter('condapproved',this)"><span class="stage-dot" style="background:#b45309"></span>Cond. Approved</div>
+            <div class="filter-chip" onclick="setLeadsFilter('condapproved',this)"><span class="stage-dot" style="background:#2563eb"></span>Cond. Approved</div>
+            <div class="filter-chip" onclick="setLeadsFilter('disclosed',this)"><span class="stage-dot" style="background:#92400e"></span>Disclosed</div>
+            <div class="filter-chip" onclick="setLeadsFilter('loansetup',this)"><span class="stage-dot" style="background:#7c3aed"></span>Loan Setup</div>
             <div class="filter-chip" onclick="setLeadsFilter('resubmittal',this)"><span class="stage-dot" style="background:#e07b00"></span>Resubmittal</div>
             <div class="filter-chip" onclick="setLeadsFilter('ctc',this)"><span class="stage-dot" style="background:var(--green)"></span>Clear to Close</div>
             <div class="filter-chip" onclick="setLeadsFilter('docsout',this)"><span class="stage-dot" style="background:#0e9f6e"></span>Docs Out</div>
@@ -578,7 +583,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
             <div class="filter-chip" onclick="setLeadsFilter('brokerpaid',this)"><span class="stage-dot" style="background:#94a3b8"></span>Broker Check</div>
           </div>
           <div style="display:flex;gap:6px">
-            <button class="btn btn-ghost btn-sm">Import</button>
+            <button class="btn btn-ghost btn-sm" onclick="openModal('bulkImportModal')">Bulk Import</button>
             <button class="btn btn-primary btn-sm" onclick="openNewLeadModal()">+ New Lead</button>
           </div>
         </div>
@@ -662,20 +667,15 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <div class="sms-layout">
         <div class="sms-list">
           <div class="sms-list-head"><span class="sms-list-title">Messages</span><button class="btn btn-primary btn-sm">+ New</button></div>
-          <div class="sms-list-body">
-            <div class="sms-thread active" onclick="selectThread(this,'DT','David Thornton','(480) 555-0391','#LD-2045',false,false)"><div class="sms-thread-av">DT</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">David Thornton</div><div class="sms-thread-time">9:14 AM</div></div><div class="sms-thread-preview">Thanks for reaching out!</div></div><div class="sms-unread"></div></div>
-            <div class="sms-thread" onclick="selectThread(this,'MR','Marcus Rivera','(702) 555-0183','#LD-2041',false,false)"><div class="sms-thread-av">MR</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">Marcus Rivera</div><div class="sms-thread-time">8:52 AM</div></div><div class="sms-thread-preview">Got it, I'll gather the docs today</div></div><div class="sms-unread"></div></div>
-            <div class="sms-thread" onclick="selectThread(this,'SK','Sarah Kim','(310) 555-0247','#LD-2038',false,false)"><div class="sms-thread-av">SK</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">Sarah Kim</div><div class="sms-thread-time">Yesterday</div></div><div class="sms-thread-preview">Sounds good, see you then!</div></div></div>
-            <div class="sms-thread" onclick="selectThread(this,'RN','Rosa Nguyen','(512) 555-0614','#LD-2033',true,false)"><div class="sms-thread-av" style="background:var(--red-bg);border-color:var(--red-mid);color:var(--red)">RN</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">Rosa Nguyen</div><div class="sms-thread-time">Mar 3</div></div><div class="sms-thread-preview">Opted out - SMS blocked</div></div></div>
-            <div class="sms-thread" onclick="selectThread(this,'JW','James Weller','(214) 555-0164','#LD-2036',false,false)"><div class="sms-thread-av">JW</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">James Weller</div><div class="sms-thread-time">Mar 2</div></div><div class="sms-thread-preview">Will the rate be locked before...</div></div></div>
-          </div>
+          <div class="sms-list-body" id="smsThreadList"></div>
         </div>
+            
         <div class="sms-convo">
           <div class="sms-convo-head">
             <div class="sms-thread-av" id="convoAv" style="width:32px;height:32px">DT</div>
             <div><div class="sms-convo-name" id="convoName">David Thornton</div><div class="sms-convo-phone" id="convoPhone">(480) 555-0391 - #LD-2045</div></div>
             <div id="convoConsentBadge" style="margin-left:10px"><span class="consent-badge">Consented</span></div>
-            <div class="sms-convo-actions"><button class="btn btn-ghost btn-sm">Call</button><button class="btn btn-ghost btn-sm" onclick="openModal('dripModal')">Drip</button></div>
+            <div class="sms-convo-actions"><button class="btn btn-ghost btn-sm" onclick="callFromThread()">Call</button><button class="btn btn-ghost btn-sm" onclick="openFollowUpFromThread()">Follow-up</button></div>
           </div>
           <div id="optoutBanner" style="display:none;padding:8px 14px;border-bottom:1px solid var(--red-mid)">
             <div class="optout-banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--red);flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><div style="flex:1"><div class="optout-banner-title">SMS Blocked - Contact opted out (STOP received)</div><div class="optout-banner-body">Sending to opted-out contacts violates TCPA. Messaging resumes if they text START.</div></div></div>
@@ -687,7 +687,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
             <div class="sms-toolbar">
               <button class="sms-toolbar-btn" onclick="openModal('cannedModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Canned</button>
               <button class="sms-toolbar-btn" onclick="openModal('dripModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Drip</button>
-              <button class="sms-toolbar-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Schedule</button>
+              <button class="sms-toolbar-btn" onclick="openFollowUpFromThread()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Schedule</button>
             </div>
             <div class="sms-compose"><textarea class="sms-textarea" id="smsInput" placeholder="Type a message..." oninput="document.getElementById('charCount').textContent=this.value.length+' / 160'"></textarea><button class="sms-send-btn" onclick="sendMessage()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:white"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
             <div class="sms-char" id="charCount">0 / 160</div>
@@ -779,11 +779,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
         <div id="team-panel-roster" style="display:flex;flex-direction:column;gap:12px;padding-top:8px">
           <div style="display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:16px;font-weight:600">Team &amp; Users</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Manage users, roles, and leadflow</div></div><div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="openModal('inviteUserModal')">+ Invite User</button></div></div>
           <div class="team-table">
-            <div class="team-head"><div class="th">User</div><div class="th">Role</div><div class="th">Leadflow</div><div class="th">Licensed States</div><div class="th">Active Loans</div><div class="th">Actions</div></div>
-            <div class="team-row"><div class="team-member"><div class="team-av" style="background:var(--accent)">JM</div><div><div class="team-member-name">Jake Morrison <span style="font-size:9px;color:var(--accent)">(You)</span></div><div class="team-member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddb7bcb6b89dadafb8b0b4b8afb1b8b3b9b4b3baf3beb2b0">[email&#160;protected]</a></div></div></div><div><span class="role-badge role-lo">Loan Officer</span></div><div><div class="leadflow-pill on"><div class="leadflow-pill-dot"></div>Active</div></div><div><span class="badge badge-app" style="font-size:9px;margin-right:2px">NV</span><span class="badge badge-app" style="font-size:9px;margin-right:2px">AZ</span><span class="badge badge-app" style="font-size:9px">CA</span></div><div style="font-size:13px;font-weight:500">14</div><div><button class="btn btn-ghost btn-sm" onclick="switchView('settings',document.querySelectorAll('.nav-item')[10])">Edit</button></div></div>
-            <div class="team-row"><div class="team-member"><div class="team-av" style="background:#64748b">SL</div><div><div class="team-member-name">Sandra Lee</div><div class="team-member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4f3c2e212b3d2e0f3f3d2a22262a3d232a212b262128612c2022">[email&#160;protected]</a></div></div></div><div><span class="role-badge role-mgr">Manager</span></div><div><div class="leadflow-pill on"><div class="leadflow-pill-dot"></div>Active</div></div><div><span class="badge badge-app" style="font-size:9px;margin-right:2px">NV</span><span class="badge badge-app" style="font-size:9px">CA</span></div><div style="font-size:13px;font-weight:500">8</div><div><button class="btn btn-ghost btn-sm" onclick="openModal('editUserModal')">Edit</button></div></div>
-            <div class="team-row"><div class="team-member"><div class="team-av" style="background:#059669">RC</div><div><div class="team-member-name">Rafael Cruz</div><div class="team-member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8af8ebecebefe6cafaf8efe7e3eff8e6efe4eee3e4eda4e9e5e7">[email&#160;protected]</a></div></div></div><div><span class="role-badge role-lo">Loan Officer</span></div><div><div class="leadflow-pill off"><div class="leadflow-pill-dot"></div>Paused</div></div><div><span class="badge badge-app" style="font-size:9px;margin-right:2px">TX</span><span class="badge badge-app" style="font-size:9px">CO</span></div><div style="font-size:13px;font-weight:500">11</div><div><button class="btn btn-ghost btn-sm" onclick="openModal('editUserModal')">Edit</button></div></div>
-            <div class="team-row"><div class="team-member"><div class="team-av" style="background:var(--red)">KW</div><div><div class="team-member-name">Kim Walsh</div><div class="team-member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="02696b6f427270676f6b67706e676c666b6c652c616d6f">[email&#160;protected]</a></div></div></div><div><span class="role-badge role-admin">Admin</span></div><div><span style="font-size:11px;color:var(--muted)">N/A</span></div><div style="font-size:11px;color:var(--muted)">All states</div><div style="font-size:13px;font-weight:500">-</div><div><button class="btn btn-ghost btn-sm" onclick="openModal('editUserModal')">Edit</button></div></div>
+            <div class="team-head"><div class="th">User</div><div class="th">Role</div><div class="th">Leadflow</div><div class="th">Presence</div><div class="th">Licensed States</div><div class="th">Active Loans</div><div class="th">Actions</div></div>
+            <div id="teamRows"></div>
           </div>
         </div>
         <div id="team-panel-override" style="display:none;flex-direction:column;gap:12px;padding-top:8px">
@@ -1005,11 +1002,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 </div>
 
 <div class="modal-backdrop" id="inviteUserModal">
-  <div class="modal"><div class="modal-head"><span class="modal-title">Invite New User</span><button class="modal-close" onclick="closeModal('inviteUserModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><div style="padding:10px 12px;background:var(--accent-light);border:1px solid var(--accent-light);border-radius:6px;font-size:11px;color:var(--accent);margin-bottom:14px">User must complete profile setup including NMLS # and state licensing before receiving leads.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="form-row" style="margin:0"><label class="form-label">First Name</label><input class="form-input" placeholder="First"></div><div class="form-row" style="margin:0"><label class="form-label">Last Name</label><input class="form-input" placeholder="Last"></div></div><div class="form-row" style="margin-top:12px"><label class="form-label">Work Email</label><input class="form-input" placeholder="name@company.com"></div><div class="form-row"><label class="form-label">Role</label><select class="form-select"><option>Loan Officer</option><option>Manager</option><option>Admin</option></select></div><div class="form-row"><label class="form-label">Branch</label><select class="form-select"><option>Las Vegas – Main</option><option>Phoenix – Scottsdale</option><option>Los Angeles – Downtown</option></select></div><div class="form-row"><label class="form-label">NMLS # <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="form-input" placeholder="e.g. 1234567"></div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('inviteUserModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('inviteUserModal');alert('Invitation sent!')">Send Invitation</button></div></div>
+  <div class="modal"><div class="modal-head"><span class="modal-title">Invite New User</span><button class="modal-close" onclick="closeModal('inviteUserModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><div style="padding:10px 12px;background:var(--accent-light);border:1px solid var(--accent-light);border-radius:6px;font-size:11px;color:var(--accent);margin-bottom:14px">User must complete profile setup including NMLS # and state licensing before receiving leads.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="form-row" style="margin:0"><label class="form-label">First Name</label><input class="form-input" id="inviteFirst" placeholder="First"></div><div class="form-row" style="margin:0"><label class="form-label">Last Name</label><input class="form-input" id="inviteLast" placeholder="Last"></div></div><div class="form-row" style="margin-top:12px"><label class="form-label">Work Email</label><input class="form-input" id="inviteEmail" placeholder="name@company.com"></div><div class="form-row"><label class="form-label">Role</label><select class="form-select" id="inviteRole"><option>Loan Officer</option><option>Manager</option><option>Admin</option></select></div><div class="form-row"><label class="form-label">Branch</label><select class="form-select"><option>Las Vegas – Main</option><option>Phoenix – Scottsdale</option><option>Los Angeles – Downtown</option></select></div><div class="form-row"><label class="form-label">NMLS # <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="form-input" placeholder="e.g. 1234567"></div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('inviteUserModal')">Cancel</button><button class="btn btn-primary" onclick="saveInvitedUser()">Send Invitation</button></div></div>
 </div>
 
 <div class="modal-backdrop" id="editUserModal">
-  <div class="modal"><div class="modal-head"><span class="modal-title" id="editUserTitle">Edit User</span><button class="modal-close" onclick="closeModal('editUserModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><div class="form-row"><label class="form-label">Role</label><select class="form-select" id="editUserRole"><option>Loan Officer</option><option>Manager</option><option>Admin</option></select></div><div class="form-row"><label class="form-label">Leadflow</label><div style="display:flex;align-items:center;gap:10px"><div class="big-toggle on" id="editLeadflowToggle" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div><span style="font-size:12px;color:var(--muted)">Toggle off to pause lead assignments</span></div></div><div class="form-row"><label class="form-label">Daily Lead Cap</label><input class="form-input" value="10" style="width:80px"></div><div class="form-row"><label class="form-label">Branch</label><select class="form-select"><option>Las Vegas – Main</option><option>Phoenix – Scottsdale</option><option>Los Angeles – Downtown</option></select></div><div style="padding:10px 12px;background:var(--amber-bg);border:1px solid var(--amber-mid);border-radius:6px;font-size:11px;color:var(--amber)">Role changes take effect immediately.</div></div><div class="modal-footer"><button class="btn" style="color:var(--red);border-color:var(--red-mid);margin-right:auto" onclick="closeModal('editUserModal')">Deactivate</button><button class="btn btn-ghost" onclick="closeModal('editUserModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('editUserModal');alert('User updated.')">Save Changes</button></div></div>
+  <div class="modal"><div class="modal-head"><span class="modal-title" id="editUserTitle">Edit User</span><button class="modal-close" onclick="closeModal('editUserModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><input type="hidden" id="editUserId"><div class="form-row"><label class="form-label">Role</label><select class="form-select" id="editUserRole"><option>Loan Officer</option><option>Manager</option><option>Admin</option></select></div><div class="form-row"><label class="form-label">Leadflow</label><div style="display:flex;align-items:center;gap:10px"><div class="big-toggle on" id="editLeadflowToggle" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div><span style="font-size:12px;color:var(--muted)">Toggle off to pause lead assignments</span></div></div><div class="form-row"><label class="form-label">Daily Lead Cap</label><input class="form-input" value="10" style="width:80px"></div><div class="form-row"><label class="form-label">Branch</label><select class="form-select"><option>Las Vegas – Main</option><option>Phoenix – Scottsdale</option><option>Los Angeles – Downtown</option></select></div><div style="padding:10px 12px;background:var(--amber-bg);border:1px solid var(--amber-mid);border-radius:6px;font-size:11px;color:var(--amber)">Role changes take effect immediately.</div></div><div class="modal-footer"><button class="btn" style="color:var(--red);border-color:var(--red-mid);margin-right:auto" onclick="closeModal('editUserModal')">Deactivate</button><button class="btn btn-ghost" onclick="closeModal('editUserModal')">Cancel</button><button class="btn btn-primary" onclick="saveEditedUser()">Save Changes</button></div></div>
 </div>
 
 <!-- Bulk assign modal -->
@@ -1047,6 +1044,31 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('bulkEmailModal')">Cancel</button><button class="btn btn-primary" onclick="confirmBulkEmail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Send Email</button></div></div>
 </div>
 
+
+<div class="modal-backdrop" id="bulkImportModal">
+  <div class="modal" style="width:560px"><div class="modal-head"><span class="modal-title">Bulk Import Leads</span><button class="modal-close" onclick="closeModal('bulkImportModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="modal-body">
+    <div style="font-size:12px;color:var(--text-mid);margin-bottom:10px">Paste CSV rows: name,type,amount,state,source,stage,campaign,timezone,phone</div>
+    <textarea id="bulkImportText" style="width:100%;height:180px;border:1px solid var(--border);border-radius:6px;padding:10px;font-family:'DM Mono',monospace;font-size:11px;resize:vertical"></textarea>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('bulkImportModal')">Cancel</button><button class="btn btn-primary" onclick="importLeadsCsv()">Import Leads</button></div></div>
+</div>
+
+
+<div class="modal-backdrop" id="leadsFilterModal">
+  <div class="modal" style="width:420px"><div class="modal-head"><span class="modal-title">Lead Filters</span><button class="modal-close" onclick="closeModal('leadsFilterModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="modal-body" style="display:flex;flex-direction:column;gap:8px">
+    <button class="btn btn-ghost" onclick="setLeadsFilter('all');closeModal('leadsFilterModal')">All</button>
+    <button class="btn btn-ghost" onclick="setLeadsFilter('intake');closeModal('leadsFilterModal')">App Intake</button>
+    <button class="btn btn-ghost" onclick="setLeadsFilter('preapproved');closeModal('leadsFilterModal')">Pre-Approved</button>
+    <button class="btn btn-ghost" onclick="setLeadsFilter('submitted');closeModal('leadsFilterModal')">Submitted to UW</button>
+    <button class="btn btn-ghost" onclick="setLeadsFilter('condapproved');closeModal('leadsFilterModal')">Conditionally Approved</button>
+    <button class="btn btn-ghost" onclick="setLeadsFilter('disclosed');closeModal('leadsFilterModal')">Disclosed</button>
+    <button class="btn btn-ghost" onclick="setLeadsFilter('loansetup');closeModal('leadsFilterModal')">Loan Setup</button>
+  </div>
+  <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('leadsFilterModal')">Done</button></div></div>
+</div>
+
 <script>
 // --- Date ---
 document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
@@ -1057,7 +1079,7 @@ const viewMeta = {
   leads:    { title:'All Leads',  tabs:['All','New Leads','Nurture','In Process','Closed'] },
   pipeline: { title:'Pipeline',   tabs:['Board View','List View','Stage Analytics'] },
   dialer:   { title:'Dialer',     tabs:['Power Dial','Recent Calls','Voicemails'] },
-  sms:      { title:'Messaging',  tabs:['All Messages','Unread','Drip Active'] },
+  sms:      { title:'Messaging',  tabs:['All Messages','Unread','Needs Follow-up'] },
   calendar: { title:'Google Calendar', tabs:['Today','This Week','Month'] },
   email:    { title:'Gmail',      tabs:['Inbox','Sent','Follow-ups'] },
   arive:    { title:'Arive LOS',  tabs:['Active Loans','Pending','Closed'] },
@@ -1074,9 +1096,10 @@ function switchView(id, el) {
   if (el) el.classList.add('active');
   const meta = viewMeta[id] || {title:id, tabs:[]};
   document.getElementById('pageTitle').textContent = meta.title;
-  document.getElementById('tabBar').innerHTML = meta.tabs.map((t,i)=>
-    `<div class="tab${i===0?' active':''}" onclick="this.parentNode.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active')">${t}</div>`
-  ).join('');
+  document.getElementById('tabBar').innerHTML = meta.tabs.map((t,i)=> {
+    const smsAction = id === 'sms' ? `setSmsListFilter('${i===1?'unread':'all'}')` : '';
+    return `<div class="tab${i===0?' active':''}" onclick="this.parentNode.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');${smsAction}">${t}</div>`;
+  }).join('');
 }
 
 // Init views
@@ -1095,8 +1118,14 @@ document.querySelectorAll('.task-checkbox').forEach(cb => {
 });
 
 // --- Modals ---
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function closeAllModals() {
+  document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+  document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+}
+
+function openModal(id) { const el = document.getElementById(id); if(!el) return; if (el.classList.contains('modal-overlay')) el.style.display = 'flex'; else el.classList.add('open'); }
+function closeModal(id) { const el = document.getElementById(id); if(!el) return; if (el.classList.contains('modal-overlay')) el.style.display = 'none'; else el.classList.remove('open'); }
 document.querySelectorAll('.modal-backdrop').forEach(b => {
   b.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
 });
@@ -1121,6 +1150,53 @@ const threadMessages = {
   JW: [{type:'date',text:'Mar 2'},{type:'out',time:'1:00 PM',text:'Hi James, your appraisal came in at value — great news! We\'re moving to final underwriting review now.'},{type:'in',av:'JW',time:'1:30 PM',text:'Will the rate be locked before we close?'}],
 };
 
+
+const smsThreadData = [
+  {av:'DT', name:'David Thornton', phone:'(480) 555-0391', id:'#LD-2045', unread:true, preview:'Thanks for reaching out!', time:'9:14 AM'},
+  {av:'MR', name:'Marcus Rivera', phone:'(702) 555-0183', id:'#LD-2041', unread:true, preview:"Got it, I\'ll gather the docs today", time:'8:52 AM'},
+  {av:'SK', name:'Sarah Kim', phone:'(310) 555-0247', id:'#LD-2038', unread:false, preview:'Sounds good, see you then!', time:'Yesterday'},
+  {av:'RN', name:'Rosa Nguyen', phone:'(512) 555-0614', id:'#LD-2033', unread:false, preview:'Opted out - SMS blocked', time:'Mar 3'},
+  {av:'JW', name:'James Weller', phone:'(214) 555-0164', id:'#LD-2036', unread:false, preview:'Will the rate be locked before...', time:'Mar 2'},
+];
+let smsListFilter = 'all';
+let currentThreadLeadId = 2045;
+
+function renderSmsThreadList() {
+  const list = document.getElementById('smsThreadList');
+  if (!list) return;
+  const rows = smsThreadData.filter(t => smsListFilter === 'unread' ? t.unread : true);
+  list.innerHTML = rows.map(t => `
+    <div class="sms-thread ${currentAv===t.av?'active':''}" onclick="selectThread(this,'${t.av}','${t.name}','${t.phone}','${t.id}')">
+      <div class="sms-thread-av" style="${t.av==='RN'?'background:var(--red-bg);border-color:var(--red-mid);color:var(--red)':''}">${t.av}</div>
+      <div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">${t.name}</div><div class="sms-thread-time">${t.time}</div></div><div class="sms-thread-preview">${t.preview}</div></div>
+      ${t.unread ? '<div class="sms-unread"></div>' : ''}
+    </div>`).join('');
+}
+
+function setSmsListFilter(filter) { smsListFilter = filter; renderSmsThreadList(); }
+
+function isWithinQuietHoursByLead(leadId) {
+  const lead = leadsData.find(l => l.id === leadId);
+  if (!lead) return {blocked:false};
+  const tz = lead.timezone || stateTimezoneMap[lead.state] || 'America/Chicago';
+  const hour = Number(new Date().toLocaleString('en-US',{hour:'2-digit',hour12:false,timeZone:tz}).split(', ').pop().split(':')[0]);
+  return {blocked: hour >= 20 || hour < 8, tz, lead};
+}
+
+function callFromThread() {
+  const guard = isWithinQuietHoursByLead(currentThreadLeadId);
+  if (guard.blocked && !confirm(`It is outside calling hours in ${guard.lead.state} (${guard.tz}). Continue anyway?`)) return;
+  switchView('dialer', document.querySelectorAll('.nav-item')[3]);
+  setTimeout(() => loadDialer(document.getElementById('convoName').textContent, document.getElementById('convoPhone').textContent.split(' · ')[0], (guard.lead||{}).stage || 'App Intake', currentThreadLeadId), 30);
+}
+
+function openFollowUpFromThread() {
+  const lead = leadsData.find(l => l.id === currentThreadLeadId);
+  if (!lead) return;
+  openLeadPanel(lead.id);
+  setTimeout(() => switchLpTab('followup'), 120);
+}
+
 function renderMessages(av) {
   const msgs = document.getElementById('smsMessages');
   const history = threadMessages[av] || [];
@@ -1138,6 +1214,8 @@ function selectThread(el, av, name, phone, id) {
   document.querySelectorAll('.sms-thread').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   currentAv = av;
+  currentThreadLeadId = Number(String(id).replace(/\D/g,'')) || currentThreadLeadId;
+  const t = smsThreadData.find(x => x.av === av); if (t) t.unread = false; renderSmsThreadList();
   document.getElementById('convoAv').textContent = av;
   document.getElementById('convoName').textContent = name;
   document.getElementById('convoPhone').textContent = phone + ' · ' + id;
@@ -1164,6 +1242,8 @@ function selectThread(el, av, name, phone, id) {
 function sendMessage() {
   const cs = contactState[currentAv];
   if (cs && cs.optedOut) { alert('Cannot send — contact has opted out.'); return; }
+  const guard = isWithinQuietHoursByLead(currentThreadLeadId);
+  if (guard.blocked && !confirm(`It is outside texting hours in ${guard.lead.state} (${guard.tz}). Send anyway?`)) return;
   const input = document.getElementById('smsInput');
   const text = input.value.trim();
   if (!text) return;
@@ -1388,10 +1468,71 @@ function switchTeamTab(tab, el) {
   if (tab === 'auditlog') renderAuditLog('all');
 }
 
-function openEditUserModal(name, role) {
-  document.getElementById('editUserTitle').textContent = 'Edit — ' + name;
-  document.getElementById('editUserRole').value = role;
+
+const teamUsers = [
+  {id:1, initials:'JM', color:'var(--accent)', name:'Jake Morrison (You)', email:'jake@premier.com', role:'Loan Officer', leadflow:'on', presence:'active', states:['NV','AZ','CA'], activeLoans:14},
+  {id:2, initials:'SL', color:'#64748b', name:'Sandra Lee', email:'sandra@premier.com', role:'Manager', leadflow:'on', presence:'away', states:['NV','CA'], activeLoans:8},
+  {id:3, initials:'RC', color:'#059669', name:'Rafael Cruz', email:'rafael@premier.com', role:'Loan Officer', leadflow:'off', presence:'offline', states:['TX','CO'], activeLoans:11},
+  {id:4, initials:'KW', color:'var(--red)', name:'Kim Walsh', email:'kim@premier.com', role:'Admin', leadflow:'off', presence:'active', states:['All states'], activeLoans:'-'}
+];
+let editingUserId = null;
+const presenceMeta = {active:{label:'Active',color:'var(--green)'},away:{label:'Away',color:'var(--amber)'},offline:{label:'Offline',color:'var(--red)'}};
+const stateTimezoneMap = {AZ:'America/Phoenix',CA:'America/Los_Angeles',CO:'America/Denver',FL:'America/New_York',GA:'America/New_York',NV:'America/Los_Angeles',TX:'America/Chicago',WA:'America/Los_Angeles'};
+
+function roleClass(role){ return role==='Admin'?'role-admin':(role==='Manager'?'role-mgr':'role-lo'); }
+function renderTeamRoster() {
+  const wrap = document.getElementById('teamRows');
+  if (!wrap) return;
+  wrap.innerHTML = teamUsers.map(u => `<div class="team-row"><div class="team-member"><div class="team-av" style="background:${u.color}">${u.initials}</div><div><div class="team-member-name">${u.name}</div><div class="team-member-email">${u.email}</div></div></div><div><span class="role-badge ${roleClass(u.role)}">${u.role}</span></div><div><div class="leadflow-pill ${u.leadflow}"><div class="leadflow-pill-dot"></div>${u.leadflow==='on'?'Active':'Paused'}</div></div><div><span style="font-size:10px;color:${presenceMeta[u.presence].color};font-weight:600">● ${presenceMeta[u.presence].label}</span></div><div>${u.states.map(s=>`<span class="badge badge-app" style="font-size:9px;margin-right:2px">${s}</span>`).join('')}</div><div style="font-size:13px;font-weight:500">${u.activeLoans}</div><div><button class="btn btn-ghost btn-sm" onclick="openEditUserModal(${u.id})">Edit</button></div></div>`).join('');
+}
+
+function openEditUserModal(userId) {
+  const u = teamUsers.find(x => x.id === userId);
+  if (!u) return;
+  editingUserId = userId;
+  document.getElementById('editUserId').value = userId;
+  document.getElementById('editUserTitle').textContent = 'Edit — ' + u.name;
+  document.getElementById('editUserRole').value = u.role;
   openModal('editUserModal');
+}
+
+function saveEditedUser() {
+  const u = teamUsers.find(x => x.id === editingUserId);
+  if (!u) return;
+  u.role = document.getElementById('editUserRole').value;
+  renderTeamRoster();
+  closeModal('editUserModal');
+  alert('User role updated.');
+}
+
+function saveInvitedUser() {
+  const first = document.getElementById('inviteFirst').value.trim();
+  const last = document.getElementById('inviteLast').value.trim();
+  const email = document.getElementById('inviteEmail').value.trim();
+  const role = document.getElementById('inviteRole').value;
+  if (!first || !last || !email) { alert('Please complete required fields.'); return; }
+  const initials = (first[0]+last[0]).toUpperCase();
+  teamUsers.push({id:Date.now(), initials, color:'#475569', name:first+' '+last, email, role, leadflow:'off', presence:'offline', states:['—'], activeLoans:0});
+  renderTeamRoster();
+  closeModal('inviteUserModal');
+  alert('Invitation sent and user added to roster.');
+}
+
+function importLeadsCsv() {
+  const text = document.getElementById('bulkImportText').value.trim();
+  if (!text) { alert('Paste CSV rows first.'); return; }
+  const rows = text.split(/\n+/).filter(Boolean);
+  let added = 0;
+  rows.forEach(r => {
+    const [name,type,amount,state,source,stage,campaign,timezone,phone] = r.split(',').map(x => (x||'').trim());
+    if (!name) return;
+    const id = Math.max(...leadsData.map(l=>l.id)) + 1 + added;
+    leadsData.unshift({id,name,type:type||'Conv Purchase',amount:amount||'$300K',stage:stage||'intake',lo:'Unassigned',state:state||'TX',source:source||'Bulk Import',followup:'Today',optedOut:false,campaign:campaign||'Bulk Import',timezone:timezone||stateTimezoneMap[state]||'America/Chicago',phone:phone||'(000) 000-0000',address:'',externalLeadId:'EXT-'+id,internalLeadId:'INT-'+id});
+    added++;
+  });
+  renderLeadsTable();
+  closeModal('bulkImportModal');
+  alert(`${added} leads imported.`);
 }
 
 // --- Audit Log ---
@@ -1544,16 +1685,48 @@ const leadsData = [
   {id:2026, name:'Amy Johansson',   type:'VA Refi',       amount:'$330K', stage:'submitted',    lo:'Rafael Cruz',   state:'CO', source:'Referral',     followup:'Mar 11',    optedOut:false},
 ];
 
+
+leadsData.forEach(l => {
+  l.campaign = l.campaign || (l.source === 'Referral' ? 'Partner Referral' : 'Q1 Lead Gen');
+  l.address = l.address || `${100 + (l.id % 900)} Main St, ${l.state}`;
+  l.phone = l.phone || `(702) 555-${1000 + (l.id % 9000)}`;
+  l.timezone = l.timezone || stateTimezoneMap[l.state] || 'America/Chicago';
+  l.externalLeadId = l.externalLeadId || `EXT-${l.id}`;
+  l.internalLeadId = l.internalLeadId || `INT-${l.id}`;
+});
+
+// Keep extended lead-info defaults in a separate pass to reduce merge conflicts with base branch.
+leadsData.forEach(l => {
+  l.city = l.city || '—';
+  l.zip = l.zip || '';
+  l.county = l.county || '';
+  l.channel = l.channel || 'Online';
+  l.employer = l.employer || '';
+  l.annualIncome = l.annualIncome || '';
+  l.creditScore = l.creditScore || '';
+  l.occupancy = l.occupancy || '';
+  l.propertyType = l.propertyType || '';
+  l.loanPurpose = l.loanPurpose || '';
+  l.loanOfficerNotes = l.loanOfficerNotes || '';
+  l.coBorrowerName = l.coBorrowerName || '';
+  l.coBorrowerPhone = l.coBorrowerPhone || '';
+  l.dob = l.dob || '';
+  l.last4ssn = l.last4ssn || '';
+  l.preferredContactMethod = l.preferredContactMethod || 'SMS';
+});
+
 const stageMeta = {
-  intake:       {label:'App Intake',           color:'var(--purple)'},
-  preapproved:  {label:'Pre-Approved',          color:'var(--accent)'},
-  submitted:    {label:'Submitted to UW',       color:'var(--amber)'},
-  condapproved: {label:'Conditionally Approved',color:'#b45309'},
-  resubmittal:  {label:'Resubmittal',           color:'#e07b00'},
-  ctc:          {label:'Clear to Close',        color:'var(--green)'},
-  docsout:      {label:'Docs Out',              color:'#0e9f6e'},
-  funded:       {label:'Loan Funded',           color:'#059669'},
-  brokerpaid:   {label:'Broker Check Received', color:'#94a3b8'},
+  intake:       {label:'App Intake',             color:'#38bdf8'},
+  preapproved:  {label:'Pre-Approved',           color:'#16a34a'},
+  submitted:    {label:'Submitted to UW',        color:'#ca8a04'},
+  condapproved: {label:'Conditionally Approved', color:'#2563eb'},
+  disclosed:    {label:'Disclosed',              color:'#92400e'},
+  loansetup:    {label:'Loan Setup',             color:'#7c3aed'},
+  resubmittal:  {label:'Resubmittal',            color:'#e07b00'},
+  ctc:          {label:'Clear to Close',         color:'#7c3aed'},
+  docsout:      {label:'Docs Out',               color:'#7c3aed'},
+  funded:       {label:'Loan Funded',            color:'#7c3aed'},
+  brokerpaid:   {label:'Broker Check Received',  color:'#7c3aed'},
 };
 
 let currentLeadsSearch = '';
@@ -1828,8 +2001,8 @@ function renderLpTab(tab) {
   const sm = stageMeta[l.stage] || {label:l.stage, color:'#888'};
 
   if (tab === 'overview') {
-    const stages = ['intake','preapproved','submitted','condapproved','resubmittal','ctc','docsout','funded','brokerpaid'];
-    const stageLabels = {'intake':'Intake','preapproved':'Pre-Appr','submitted':'Sub to UW','condapproved':'Cond Appr','resubmittal':'Resubmit','ctc':'CTC','docsout':'Docs Out','funded':'Funded','brokerpaid':'Broker Paid'};
+    const stages = ['intake','preapproved','submitted','condapproved','disclosed','loansetup','resubmittal','ctc','docsout','funded','brokerpaid'];
+    const stageLabels = {'intake':'Intake','preapproved':'Pre-Appr','submitted':'Sub to UW','condapproved':'Cond Appr','disclosed':'Disclosed','loansetup':'Loan Setup','resubmittal':'Resubmit','ctc':'CTC','docsout':'Docs Out','funded':'Funded','brokerpaid':'Broker Paid'};
     body.innerHTML = `
       <div class="lp-section">
         <div class="lp-section-title">Pipeline Stage</div>
@@ -1843,7 +2016,7 @@ function renderLpTab(tab) {
           <div class="lp-field"><div class="lp-field-label">Loan Type</div><div class="lp-field-val">${l.type}</div></div>
           <div class="lp-field"><div class="lp-field-label">Loan Amount</div><div class="lp-field-val" style="font-family:'DM Mono',monospace">${l.amount}</div></div>
           <div class="lp-field"><div class="lp-field-label">Property State</div><div class="lp-field-val">${l.state}</div></div>
-          <div class="lp-field"><div class="lp-field-label">Lead Source</div><div class="lp-field-val">${l.source}</div></div>
+          <div class="lp-field"><div class="lp-field-label">Lead Source</div><div class="lp-field-val">${l.source}</div></div><div class="lp-field"><div class="lp-field-label">Campaign</div><div class="lp-field-val">${l.campaign||'—'}</div></div><div class="lp-field"><div class="lp-field-label">Address</div><div class="lp-field-val">${l.address||'—'}</div></div><div class="lp-field"><div class="lp-field-label">Lead Timezone</div><div class="lp-field-val">${l.timezone||stateTimezoneMap[l.state]||'—'}</div></div><div class="lp-field"><div class="lp-field-label">External Lead ID</div><div class="lp-field-val">${l.externalLeadId||'—'}</div></div><div class="lp-field"><div class="lp-field-label">Internal Lead ID</div><div class="lp-field-val">${l.internalLeadId||('LD-'+l.id)}</div></div>
           <div class="lp-field"><div class="lp-field-label">Assigned LO</div><div class="lp-field-val">${l.lo}</div></div>
           <div class="lp-field"><div class="lp-field-label">Follow-up</div><div class="lp-field-val" style="color:var(--amber)">${l.followup}</div></div>
         </div>
@@ -1851,7 +2024,7 @@ function renderLpTab(tab) {
       <div class="lp-section">
         <div class="lp-section-title">Contact</div>
         <div class="lp-grid">
-          <div class="lp-field"><div class="lp-field-label">Phone</div><div class="lp-field-val" style="font-family:'DM Mono',monospace">(702) 555-${1000+l.id%9000}</div></div>
+          <div class="lp-field"><div class="lp-field-label">Phone</div><div class="lp-field-val" style="font-family:'DM Mono',monospace">${l.phone || '(702) 555-'+(1000+l.id%9000)}</div></div>
           <div class="lp-field"><div class="lp-field-label">Email</div><div class="lp-field-val" style="font-size:11px">${l.name.split(' ')[0].toLowerCase()}@gmail.com</div></div>
         </div>
         ${l.optedOut ? '<div style="margin-top:10px;padding:8px 10px;background:var(--red-bg);border:1px solid var(--red-mid);border-radius:6px;font-size:11px;color:var(--red);font-weight:500">SMS Opted Out — outbound SMS blocked</div>' : ''}
@@ -1864,6 +2037,23 @@ function renderLpTab(tab) {
         </div>
       </div>
     `;
+  }
+
+  if (tab === 'leadinfo') {
+    body.innerHTML = `
+      <div class="lp-section">
+        <div class="lp-section-title">Lead Info (Editable)</div>
+        <div class="lp-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+          ${[
+            ['Campaign','campaign'],['Address','address'],['Phone Number','phone'],['State','state'],['City','city'],['Zip','zip'],['County','county'],
+            ['External Lead ID','externalLeadId'],['Internal Lead ID','internalLeadId'],['Timezone','timezone'],['Lead Source','source'],['Channel','channel'],
+            ['Employer','employer'],['Annual Income','annualIncome'],['Credit Score','creditScore'],['Occupancy','occupancy'],['Property Type','propertyType'],
+            ['Loan Purpose','loanPurpose'],['Co-Borrower Name','coBorrowerName'],['Co-Borrower Phone','coBorrowerPhone'],['DOB','dob'],['SSN Last 4','last4ssn']
+          ].map(([label,key]) => `<div><label class="form-label">${label}</label><input class="form-input" id="li-${key}" value="${String(l[key]||'').replace(/"/g,'&quot;')}"></div>`).join('')}
+          <div style="grid-column:1/-1"><label class="form-label">LO Notes</label><textarea class="form-input" id="li-loanOfficerNotes" style="min-height:90px;resize:vertical;padding:10px">${l.loanOfficerNotes||''}</textarea></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn btn-primary btn-sm" onclick="saveLeadInfo()">Save Lead Info</button></div>
+      </div>`;
   }
 
   if (tab === 'activity') {
@@ -1996,6 +2186,20 @@ function updateLeadStage(stage, el) {
   // Add to activity log
   if (!leadActivities[currentLead.id]) leadActivities[currentLead.id] = [];
   leadActivities[currentLead.id].unshift({icon:'lead', color:'var(--accent)', text:'Stage updated to ' + (stageMeta[stage]||{label:stage}).label, time:'Just now'});
+}
+
+function saveLeadInfo() {
+  if (!currentLead) return;
+  const keys = ['campaign','address','phone','state','city','zip','county','externalLeadId','internalLeadId','timezone','source','channel','employer','annualIncome','creditScore','occupancy','propertyType','loanPurpose','coBorrowerName','coBorrowerPhone','dob','last4ssn','loanOfficerNotes'];
+  const lead = leadsData.find(x => x.id === currentLead.id);
+  if (!lead) return;
+  keys.forEach(k => {
+    const el = document.getElementById('li-' + k);
+    if (el) lead[k] = el.value.trim();
+  });
+  Object.assign(currentLead, lead);
+  renderLeadsTable();
+  showToast('Lead info saved', 'var(--green)');
 }
 
 function saveQuickNote() {
@@ -2470,8 +2674,37 @@ function settingsSave(section) {
   showToast(section + ' settings saved.', 'var(--green)');
 }
 
+function handleUnwiredAction(btn) {
+  const label = (btn.textContent || btn.getAttribute('title') || '').trim().toLowerCase();
+  if (!label) return false;
+  if (label.includes('filter')) { showToast('Filter panel coming next. Using search + stage chips for now.', 'var(--accent)'); return true; }
+  if (label.includes('view all')) { switchView('leads', document.querySelectorAll('.nav-item')[1]); return true; }
+  if (label === 'edit' || label.includes('edit')) { showToast('Edit opened in Lead Info tab.', 'var(--accent)'); return true; }
+  if (label.includes('reply')) { showToast('Reply draft ready below.', 'var(--green)'); return true; }
+  if (label.includes('forward')) { showToast('Forward flow opened (demo).', 'var(--accent)'); return true; }
+  if (label.includes('send reply')) { showToast('Reply sent.', 'var(--green)'); return true; }
+  if (label === '+ new' || label.includes('new')) { openModal('newLeadModal'); return true; }
+  return false;
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllModals(); });
+
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('button, .icon-btn');
+  if (!target) return;
+  if (target.hasAttribute('onclick')) return;
+  if (target.classList.contains('modal-close')) return;
+  const worked = handleUnwiredAction(target);
+  if (!worked && target.classList.contains('icon-btn')) {
+    showToast('Action executed (demo).', 'var(--accent)');
+  }
+});
+
 window.addEventListener('load', function() {
+  closeAllModals();
   renderMessages('DT');
+  renderSmsThreadList();
+  renderTeamRoster();
   renderCannedModal('');
   filterCanned('');
   renderLicenses();
@@ -2498,6 +2731,7 @@ window.addEventListener('load', function() {
   </div>
   <div class="lead-panel-tabs">
     <div class="lead-panel-tab active" onclick="switchLpTab('overview',this)">Overview</div>
+    <div class="lead-panel-tab" onclick="switchLpTab('leadinfo',this)">Lead Info</div>
     <div class="lead-panel-tab" onclick="switchLpTab('activity',this)">Activity</div>
     <div class="lead-panel-tab" onclick="switchLpTab('notes',this)">Notes</div>
     <div class="lead-panel-tab" onclick="switchLpTab('followup',this)">Follow-up</div>
@@ -2594,6 +2828,8 @@ window.addEventListener('load', function() {
           <option value="preapproved">Pre-Approved</option>
           <option value="submitted">Submitted to UW</option>
           <option value="condapproved">Conditionally Approved</option>
+          <option value="disclosed">Disclosed</option>
+          <option value="loansetup">Loan Setup</option>
           <option value="resubmittal">Resubmittal</option>
           <option value="ctc">Clear to Close</option>
           <option value="docsout">Docs Out</option>
