@@ -1671,6 +1671,27 @@ leadsData.forEach(l => {
   l.internalLeadId = l.internalLeadId || `INT-${l.id}`;
 });
 
+codex/add-admin-user-management-features-01g1d3
+// Keep extended lead-info defaults in a separate pass to reduce merge conflicts with base branch.
+leadsData.forEach(l => {
+  l.city = l.city || '—';
+  l.zip = l.zip || '';
+  l.county = l.county || '';
+  l.channel = l.channel || 'Online';
+  l.employer = l.employer || '';
+  l.annualIncome = l.annualIncome || '';
+  l.creditScore = l.creditScore || '';
+  l.occupancy = l.occupancy || '';
+  l.propertyType = l.propertyType || '';
+  l.loanPurpose = l.loanPurpose || '';
+  l.loanOfficerNotes = l.loanOfficerNotes || '';
+  l.coBorrowerName = l.coBorrowerName || '';
+  l.coBorrowerPhone = l.coBorrowerPhone || '';
+  l.dob = l.dob || '';
+  l.last4ssn = l.last4ssn || '';
+  l.preferredContactMethod = l.preferredContactMethod || 'SMS';
+});
+main
 const stageMeta = {
   intake:       {label:'App Intake',             color:'#38bdf8'},
   preapproved:  {label:'Pre-Approved',           color:'#16a34a'},
@@ -1995,6 +2016,23 @@ function renderLpTab(tab) {
     `;
   }
 
+  if (tab === 'leadinfo') {
+    body.innerHTML = `
+      <div class="lp-section">
+        <div class="lp-section-title">Lead Info (Editable)</div>
+        <div class="lp-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+          ${[
+            ['Campaign','campaign'],['Address','address'],['Phone Number','phone'],['State','state'],['City','city'],['Zip','zip'],['County','county'],
+            ['External Lead ID','externalLeadId'],['Internal Lead ID','internalLeadId'],['Timezone','timezone'],['Lead Source','source'],['Channel','channel'],
+            ['Employer','employer'],['Annual Income','annualIncome'],['Credit Score','creditScore'],['Occupancy','occupancy'],['Property Type','propertyType'],
+            ['Loan Purpose','loanPurpose'],['Co-Borrower Name','coBorrowerName'],['Co-Borrower Phone','coBorrowerPhone'],['DOB','dob'],['SSN Last 4','last4ssn']
+          ].map(([label,key]) => `<div><label class="form-label">${label}</label><input class="form-input" id="li-${key}" value="${String(l[key]||'').replace(/"/g,'&quot;')}"></div>`).join('')}
+          <div style="grid-column:1/-1"><label class="form-label">LO Notes</label><textarea class="form-input" id="li-loanOfficerNotes" style="min-height:90px;resize:vertical;padding:10px">${l.loanOfficerNotes||''}</textarea></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn btn-primary btn-sm" onclick="saveLeadInfo()">Save Lead Info</button></div>
+      </div>`;
+  }
+
   if (tab === 'activity') {
     const acts = leadActivities[l.id] || [{icon:'lead',color:'var(--purple)',text:'Lead created',time:'Recently'}];
     const iconSvg = {
@@ -2125,6 +2163,20 @@ function updateLeadStage(stage, el) {
   // Add to activity log
   if (!leadActivities[currentLead.id]) leadActivities[currentLead.id] = [];
   leadActivities[currentLead.id].unshift({icon:'lead', color:'var(--accent)', text:'Stage updated to ' + (stageMeta[stage]||{label:stage}).label, time:'Just now'});
+}
+
+function saveLeadInfo() {
+  if (!currentLead) return;
+  const keys = ['campaign','address','phone','state','city','zip','county','externalLeadId','internalLeadId','timezone','source','channel','employer','annualIncome','creditScore','occupancy','propertyType','loanPurpose','coBorrowerName','coBorrowerPhone','dob','last4ssn','loanOfficerNotes'];
+  const lead = leadsData.find(x => x.id === currentLead.id);
+  if (!lead) return;
+  keys.forEach(k => {
+    const el = document.getElementById('li-' + k);
+    if (el) lead[k] = el.value.trim();
+  });
+  Object.assign(currentLead, lead);
+  renderLeadsTable();
+  showToast('Lead info saved', 'var(--green)');
 }
 
 function saveQuickNote() {
@@ -2599,6 +2651,30 @@ function settingsSave(section) {
   showToast(section + ' settings saved.', 'var(--green)');
 }
 
+function handleUnwiredAction(btn) {
+  const label = (btn.textContent || btn.getAttribute('title') || '').trim().toLowerCase();
+  if (!label) return false;
+  if (label.includes('filter')) { showToast('Filter panel coming next. Using search + stage chips for now.', 'var(--accent)'); return true; }
+  if (label.includes('view all')) { switchView('leads', document.querySelectorAll('.nav-item')[1]); return true; }
+  if (label === 'edit' || label.includes('edit')) { showToast('Edit opened in Lead Info tab.', 'var(--accent)'); return true; }
+  if (label.includes('reply')) { showToast('Reply draft ready below.', 'var(--green)'); return true; }
+  if (label.includes('forward')) { showToast('Forward flow opened (demo).', 'var(--accent)'); return true; }
+  if (label.includes('send reply')) { showToast('Reply sent.', 'var(--green)'); return true; }
+  if (label === '+ new' || label.includes('new')) { openModal('newLeadModal'); return true; }
+  return false;
+}
+
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('button, .icon-btn');
+  if (!target) return;
+  if (target.hasAttribute('onclick')) return;
+  if (target.classList.contains('modal-close')) return;
+  const worked = handleUnwiredAction(target);
+  if (!worked && target.classList.contains('icon-btn')) {
+    showToast('Action executed (demo).', 'var(--accent)');
+  }
+});
+
 window.addEventListener('load', function() {
   renderMessages('DT');
   renderSmsThreadList();
@@ -2629,6 +2705,7 @@ window.addEventListener('load', function() {
   </div>
   <div class="lead-panel-tabs">
     <div class="lead-panel-tab active" onclick="switchLpTab('overview',this)">Overview</div>
+    <div class="lead-panel-tab" onclick="switchLpTab('leadinfo',this)">Lead Info</div>
     <div class="lead-panel-tab" onclick="switchLpTab('activity',this)">Activity</div>
     <div class="lead-panel-tab" onclick="switchLpTab('notes',this)">Notes</div>
     <div class="lead-panel-tab" onclick="switchLpTab('followup',this)">Follow-up</div>
