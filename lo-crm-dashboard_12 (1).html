@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Command — Mortgage CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#1a1c24; --bg2:#20222c; --surface:#252834; --surface2:#2c2f3e;
+  --border:#363a4f; --border-strong:#464a62;
+  --text:#e2e4f0; --text-mid:#9498b4; --muted:#5a5e78;
+  --accent:#5b80f5; --accent-light:#1c2448; --accent-l:#1c2448; --accent-hover:#4a6de8;
+  --green:#34d399; --green-bg:#0d2318; --green-mid:#065f46;
+  --red:#f87171; --red-bg:#2a1010; --red-mid:#7f1d1d;
+  --amber:#fbbf24; --amber-bg:#241a07; --amber-mid:#78350f;
+  --purple:#a78bfa;
+  --purple-bg:#1e1a2e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;height:100vh;overflow:hidden;display:flex;-webkit-font-smoothing:antialiased}
+.sidebar{width:200px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.sidebar-logo{padding:16px 14px 10px;border-bottom:1px solid var(--border)}
+.logo-mark{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.3px}
+.logo-sub{font-size:10px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin-top:2px;font-family:'DM Mono',monospace}
+.nav-section{padding:10px 8px 4px}
+.nav-label{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:4px 6px 6px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;cursor:pointer;color:var(--text-mid);font-size:12px;font-weight:500;transition:all .1s;margin-bottom:1px}
+.nav-item:hover{background:var(--bg);color:var(--text)}
+.nav-item.active{background:var(--accent-light);color:var(--accent)}
+.nav-item svg{width:14px;height:14px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--accent);color:white;font-size:9px;font-weight:600;padding:1px 6px;border-radius:10px;font-family:'DM Mono',monospace}
+.conn-dot{width:6px;height:6px;border-radius:50%;background:var(--green);margin-left:auto;flex-shrink:0}
+.sidebar-footer{margin-top:auto;padding:10px 8px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;margin-top:4px}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:white;flex-shrink:0;font-family:'DM Mono',monospace}
+.user-name{font-size:12px;font-weight:500;color:var(--text)}
+.user-role{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg)}
+.topbar{height:48px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 18px;flex-shrink:0}
+.page-title{font-size:14px;font-weight:600;letter-spacing:-.3px;white-space:nowrap}
+.topbar-sep{flex:1}
+.topbar-date{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap}
+.search-bar{display:flex;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:0 10px;height:30px;min-width:180px}
+.search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;width:100%}
+.tab-bar{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 18px;background:var(--surface);flex-shrink:0}
+.tab{padding:10px 14px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .1s}
+.tab:hover{color:var(--text-mid)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.content{flex:1;overflow:hidden;display:flex}
+.view{flex:1;display:none;flex-direction:column;overflow:hidden;background:var(--bg)}
+#view-dashboard{flex-direction:row}
+.view.active{display:flex}
+.btn{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:6px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .12s;white-space:nowrap;background:var(--surface);color:var(--text-mid)}
+.btn:hover{background:var(--bg);border-color:var(--border-strong)}
+.btn svg{width:11px;height:11px}
+.btn-primary{background:var(--accent);color:white;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn-ghost{background:none;border-color:transparent;color:var(--muted)}
+.btn-ghost:hover{background:var(--bg);border-color:var(--border);color:var(--text-mid)}
+.btn-sm{height:26px;padding:0 10px;font-size:11px}
+.form-row{margin-bottom:12px}
+.form-label{display:block;font-size:11px;font-weight:500;color:var(--text-mid);margin-bottom:4px}
+.form-input{width:100%;height:32px;border:1px solid var(--border);border-radius:6px;padding:0 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--surface);outline:none;transition:border-color .1s}
+.form-input:focus{border-color:var(--accent)}
+.form-select{width:100%;height:32px;border:1px solid var(--border);border-radius:6px;padding:0 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);background:var(--surface);outline:none}
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.2px}
+.badge-new{background:#f3e8ff;color:var(--purple);border:1px solid #ddd6fe}
+.badge-app{background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-light)}
+.badge-proc{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-mid)}
+.badge-uw{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.badge-close{background:var(--green-bg);color:var(--green);border:1px solid var(--green-mid)}
+.badge-nurture{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+.role-badge{display:inline-flex;align-items:center;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:600}
+.role-lo{background:var(--accent-light);color:var(--accent)}
+.role-mgr{background:#f3e8ff;color:var(--purple)}
+.role-admin{background:var(--red-bg);color:var(--red)}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:none;align-items:center;justify-content:center}
+.modal{background:var(--surface);border-radius:10px;width:480px;max-width:95vw;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.modal-title{font-size:14px;font-weight:600;letter-spacing:-.2px}
+.modal-close{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);background:none;border:none}
+.modal-close:hover{background:var(--bg);color:var(--text)}
+.modal-close svg{width:14px;height:14px}
+.modal-body{padding:16px;overflow-y:auto;flex:1}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--border)}
+/* Dashboard */
+.center-panel{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:16px;min-width:0;background:var(--bg)}
+.right-panel{width:236px;flex-shrink:0;border-left:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:0}
+.rp-section{padding:14px 14px 10px}
+.rp-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 14px}
+.stat-label{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:.4px}
+.stat-value{font-size:22px;font-weight:600;letter-spacing:-.5px;margin-bottom:3px}
+.stat-sub{font-size:11px;color:var(--muted)}
+.stat-up{color:var(--green);font-weight:600}
+.stat-down{color:var(--red);font-weight:600}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.section-title{font-size:13px;font-weight:600;letter-spacing:-.2px}
+.pipeline-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.pipeline-stage{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 12px;display:flex;flex-direction:column;gap:3px}
+.stage-bar{width:100%;height:3px;border-radius:2px;margin-bottom:5px}
+.stage-name{font-size:10px;color:var(--muted);font-weight:500}
+.stage-count{font-size:18px;font-weight:600;letter-spacing:-.3px}
+.stage-value{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
+.leads-table{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.table-head,.table-row{display:grid;grid-template-columns:2fr 1.2fr 100px 90px 80px 110px 100px;gap:8px;padding:8px 12px;align-items:center}
+.table-head{background:var(--surface2);border-bottom:1px solid var(--border)}
+.table-row{border-bottom:1px solid var(--border);transition:background .1s}
+.table-row:last-child{border-bottom:none}
+.table-row:hover{background:var(--bg)}
+.th{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.td{font-size:12px;color:var(--text-mid)}
+.lead-info{display:flex;align-items:center;gap:8px}
+.lead-initials{width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--text-mid);flex-shrink:0;font-family:'DM Mono',monospace}
+.lead-name-txt{font-size:12px;font-weight:500;color:var(--text)}
+.lead-phone{font-size:10px;color:var(--muted)}
+.lead-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)}
+.fu-urgent{color:var(--red);font-weight:600;font-size:11px}
+.fu-soon{color:var(--amber);font-weight:500;font-size:11px}
+.fu-ok{color:var(--muted);font-size:11px}
+.action-btns{display:flex;gap:4px}
+.icon-btn{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);border:1px solid var(--border);background:var(--surface);transition:all .1s}
+.icon-btn:hover{background:var(--bg);color:var(--accent);border-color:var(--accent)}
+.icon-btn svg{width:11px;height:11px}
+/* Dialer */
+.dialer-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px}
+.dialer-status-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-label{font-size:11px;color:var(--green);font-weight:500}
+.dialer-number{font-size:16px;font-weight:600;font-family:'DM Mono',monospace;letter-spacing:.5px;margin-bottom:2px}
+.dialer-contact{font-size:10px;color:var(--muted);margin-bottom:10px}
+.dialer-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
+.d-btn{height:30px;border-radius:6px;border:1px solid var(--border);background:var(--surface);font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;color:var(--text-mid);transition:all .1s}
+.d-btn:hover{border-color:var(--accent);color:var(--accent)}
+.d-btn svg{width:11px;height:11px}
+.d-btn.call{background:var(--green);color:white;border-color:var(--green)}
+.d-btn.call:hover{background:#15803d}
+.power-row{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border)}
+.power-label{font-size:11px;font-weight:500}
+.power-queue{font-size:10px;color:var(--muted)}
+.toggle,.big-toggle{width:32px;height:18px;border-radius:9px;background:var(--border-strong);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on,.big-toggle.on{background:var(--accent)}
+.toggle::after,.big-toggle::after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:white;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on::after,.big-toggle.on::after{transform:translateX(14px)}
+/* Tasks */
+.tasks-scroll{padding:0 14px 10px}
+.task-rp-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.task-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.task-item.task-urgent{border-left:2px solid var(--red);padding-left:8px;margin-left:-8px}
+.task-checkbox{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border-strong);flex-shrink:0;margin-top:1px;cursor:pointer;transition:all .15s}
+.task-text{font-size:11px;font-weight:500;line-height:1.4}
+.task-meta{font-size:10px;color:var(--muted);margin-top:1px}
+/* Calendar */
+.cal-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)}
+.cal-time{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;width:26px;flex-shrink:0}
+.cal-pip{width:3px;height:28px;border-radius:2px;flex-shrink:0}
+.cal-name{font-size:11px;font-weight:500}
+.cal-sub{font-size:10px;color:var(--muted)}
+/* Full dialer */
+.dialer-full{display:flex;flex:1;overflow:hidden}
+.queue-list{width:200px;border-right:1px solid var(--border);background:var(--surface);overflow-y:auto}
+.queue-head{padding:12px 14px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.queue-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.queue-item:hover,.queue-item.active-call{background:var(--accent-light)}
+.queue-num{width:18px;height:18px;border-radius:50%;background:var(--bg2);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace}
+.queue-name{font-size:12px;font-weight:500}
+.queue-phone{font-size:10px;color:var(--muted)}
+.big-dialer{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:40px}
+.big-number{font-size:28px;font-weight:600;font-family:'DM Mono',monospace;letter-spacing:1px;margin:6px 0 4px}
+.big-contact{font-size:12px;color:var(--muted);margin-bottom:20px}
+.keypad{display:grid;grid-template-columns:repeat(3,52px);gap:8px;margin-bottom:24px}
+.key{width:52px;height:44px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;cursor:pointer;transition:all .1s}
+.key:hover{background:var(--bg);border-color:var(--accent);color:var(--accent)}
+.big-btns{display:flex;gap:14px}
+.big-btn{width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.big-btn svg{width:20px;height:20px}
+.big-btn.call{background:var(--green);color:white}
+.big-btn.sms{background:var(--accent);color:white}
+.big-btn.hang{background:var(--red);color:white}
+/* SMS */
+.sms-layout{display:flex;flex:1;overflow:hidden}
+.sms-list{width:220px;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column}
+.sms-list-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sms-list-title{font-size:13px;font-weight:600}
+.sms-list-body{flex:1;overflow-y:auto}
+.sms-thread{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;position:relative}
+.sms-thread:hover{background:var(--bg)}
+.sms-thread.active{background:var(--accent-light)}
+.sms-thread-av{width:30px;height:30px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;font-family:'DM Mono',monospace;flex-shrink:0;color:var(--text-mid)}
+.sms-thread-name{font-size:12px;font-weight:500}
+.sms-thread-time{font-size:10px;color:var(--muted)}
+.sms-thread-preview{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sms-unread{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-left:auto}
+.sms-convo{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.sms-convo-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0}
+.sms-convo-name{font-size:13px;font-weight:600}
+.sms-convo-phone{font-size:10px;color:var(--muted)}
+.sms-convo-actions{display:flex;gap:6px;margin-left:auto}
+.sms-messages{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.msg-row{display:flex;align-items:flex-end;gap:6px}
+.msg-row.out{flex-direction:row-reverse}
+.msg-bubble{max-width:70%;padding:8px 11px;border-radius:12px;font-size:12px;line-height:1.5}
+.msg-row.out .msg-bubble{background:var(--accent);color:white;border-radius:12px 12px 3px 12px}
+.msg-row.in .msg-bubble{background:var(--surface);border:1px solid var(--border);border-radius:12px 12px 12px 3px}
+.msg-av{width:22px;height:22px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;flex-shrink:0;font-family:'DM Mono',monospace;color:var(--text-mid)}
+.msg-time{font-size:10px;color:var(--muted)}
+.stop-msg{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0}
+.stop-msg-bubble{background:var(--red-bg);border:1px solid var(--red-mid);color:var(--red);font-size:11px;font-weight:600;padding:5px 12px;border-radius:6px}
+.stop-system-note{font-size:10px;color:var(--muted);text-align:center}
+.sms-input-area{border-top:1px solid var(--border);background:var(--surface);flex-shrink:0;position:relative}
+.sms-toolbar{display:flex;gap:4px;padding:8px 10px 0}
+.sms-toolbar-btn{display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:5px;border:1px solid var(--border);background:none;font-size:11px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif}
+.sms-toolbar-btn:hover{background:var(--bg);color:var(--text-mid)}
+.sms-toolbar-btn svg{width:10px;height:10px}
+.sms-compose{display:flex;align-items:flex-end;gap:8px;padding:6px 10px 6px}
+.sms-textarea{flex:1;min-height:56px;max-height:120px;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:12px;resize:none;outline:none;background:var(--bg);color:var(--text)}
+.sms-textarea:focus{border-color:var(--accent)}
+.sms-send-btn{width:34px;height:34px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .1s}
+.sms-send-btn:hover{background:var(--accent-hover)}
+.sms-send-btn svg{width:14px;height:14px;color:white}
+.sms-char{font-size:10px;color:var(--muted);text-align:right;padding:0 12px 6px;font-family:'DM Mono',monospace}
+.sms-sidebar{width:210px;border-left:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;overflow:hidden}
+.sms-tabs{display:flex;border-bottom:1px solid var(--border)}
+.sms-tab{flex:1;padding:9px 4px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .1s;position:relative}
+.sms-tab.active{color:var(--accent);border-bottom:2px solid var(--accent)}
+.sms-panel{padding:10px;flex:1;overflow-y:auto}
+.canned-item{padding:8px 10px;border:1px solid var(--border);border-radius:6px;cursor:pointer;margin-bottom:6px;transition:all .1s;position:relative}
+.canned-item:hover{border-color:var(--accent);background:var(--accent-light)}
+.canned-label{font-size:11px;font-weight:600;margin-bottom:2px}
+.canned-preview{font-size:10px;color:var(--muted);line-height:1.4}
+.canned-tag{font-size:9px;font-weight:600;color:var(--accent);background:var(--accent-light);padding:1px 5px;border-radius:3px;margin-top:4px;display:inline-block}
+.drip-campaign{border:1px solid var(--border);border-radius:7px;padding:10px;margin-bottom:8px}
+.drip-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.drip-name{font-size:12px;font-weight:600}
+.drip-meta{font-size:10px;color:var(--muted)}
+.drip-toggle{width:28px;height:16px;border-radius:8px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.drip-toggle.on{background:var(--accent)}
+.drip-toggle.off{background:var(--border-strong)}
+.drip-toggle::after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:white;top:2px;left:2px;transition:transform .2s}
+.drip-toggle.on::after{transform:translateX(12px)}
+.drip-steps{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.drip-step{display:flex;align-items:center;gap:6px}
+.drip-step-day{font-size:9px;font-weight:600;color:var(--accent);font-family:'DM Mono',monospace;width:30px;flex-shrink:0}
+.drip-step-txt{font-size:10px;color:var(--muted)}
+.drip-assign-btn{width:100%;height:26px;border-radius:5px;border:1px dashed var(--border);background:none;font-size:11px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif}
+.drip-assign-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.consent-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--green);background:var(--green-bg);padding:2px 8px;border-radius:4px;border:1px solid var(--green-mid)}
+.optout-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--red);background:var(--red-bg);padding:2px 8px;border-radius:4px;border:1px solid var(--red-mid)}
+.optout-banner{display:flex;align-items:flex-start;gap:10px;background:var(--red-bg);border:1px solid var(--red-mid);border-radius:7px;padding:10px 12px}
+.optout-banner svg{width:14px;height:14px;color:var(--red);flex-shrink:0;margin-top:1px}
+.optout-banner-title{font-size:12px;font-weight:600;color:var(--red)}
+.optout-banner-body{font-size:11px;color:var(--red);margin-top:2px;line-height:1.5}
+.optout-btn{font-size:11px;color:var(--red);background:none;border:1px solid var(--red-mid);border-radius:5px;padding:3px 8px;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.consent-notice{display:flex;align-items:flex-start;gap:9px;background:var(--accent-light);border:1px solid var(--accent-light);border-radius:6px;padding:8px 10px}
+.consent-notice svg{width:13px;height:13px;color:var(--accent);flex-shrink:0;margin-top:1px}
+.consent-notice-txt{font-size:11px;color:#1e40af;line-height:1.5}
+.compliance-log-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--border)}
+.log-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.log-icon svg{width:10px;height:10px}
+.log-icon.stop{background:var(--red-bg);color:var(--red)}
+.log-icon.consent,.log-icon.start{background:var(--green-bg);color:var(--green)}
+.log-name{font-size:11px;font-weight:500}
+.log-detail{font-size:10px;color:var(--muted);margin-top:1px}
+.log-time{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap;flex-shrink:0}
+/* Settings */
+.settings-layout{display:flex;flex:1;overflow:hidden}
+.settings-nav{width:180px;flex-shrink:0;border-right:1px solid var(--border);background:var(--surface);padding:14px 8px;overflow-y:auto}
+.settings-nav-label{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:8px 8px 4px}
+.settings-nav-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;cursor:pointer;color:var(--text-mid);font-size:12px;font-weight:500;transition:all .1s;margin-bottom:1px}
+.settings-nav-item:hover{background:var(--bg);color:var(--text)}
+.settings-nav-item.active{background:var(--accent-light);color:var(--accent)}
+.settings-nav-item svg{width:13px;height:13px;flex-shrink:0}
+.settings-content{flex:1;overflow-y:auto;padding:20px 24px}
+.settings-section{display:none}
+.settings-section.active{display:block}
+.settings-section-title{font-size:18px;font-weight:600;letter-spacing:-.4px;margin-bottom:3px}
+.settings-section-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;overflow:hidden}
+.settings-card-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.settings-card-title{font-size:13px;font-weight:600}
+.settings-card-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.settings-card-body{padding:14px 16px}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.settings-row:last-child{border-bottom:none}
+.settings-row-label{font-size:12px;font-weight:500}
+.settings-row-desc{font-size:11px;color:var(--muted);margin-top:1px}
+.leadflow-status{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:7px;border:1px solid;margin-bottom:12px;transition:all .3s}
+.leadflow-status.on{background:var(--green-bg);border-color:var(--green-mid)}
+.leadflow-status.off{background:var(--red-bg);border-color:var(--red-mid)}
+.leadflow-indicator{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.leadflow-status.on .leadflow-indicator{background:var(--green)}
+.leadflow-status.off .leadflow-indicator{background:var(--red)}
+.leadflow-status-text{font-size:12px;font-weight:600}
+.leadflow-status.on .leadflow-status-text{color:var(--green)}
+.leadflow-status.off .leadflow-status-text{color:var(--red)}
+.state-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px}
+.state-chip{padding:6px 6px 5px;border-radius:6px;border:1px solid var(--border);cursor:pointer;background:var(--surface2);transition:all .1s;text-align:center;position:relative}
+.state-chip:hover{border-color:var(--accent);background:var(--accent-light)}
+.state-chip.active{border-color:var(--accent);background:var(--accent-light)}
+.state-chip.expiring{border-color:var(--amber-mid);background:var(--amber-bg)}
+.state-chip.expired{border-color:var(--red-mid);background:var(--red-bg)}
+.state-abbr{font-size:11px;font-weight:700;font-family:'DM Mono',monospace}
+.state-name{font-size:8px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.state-exp{font-size:8px;margin-top:1px;font-family:'DM Mono',monospace}
+.state-badge-dot{width:6px;height:6px;border-radius:50%;position:absolute;top:4px;right:4px}
+/* Team */
+.team-table{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.team-head,.team-row{display:grid;grid-template-columns:2fr 90px 90px 1fr 80px 80px;gap:10px;padding:9px 14px;align-items:center}
+.team-head{background:var(--surface2);border-bottom:1px solid var(--border)}
+.team-row{border-bottom:1px solid var(--border);transition:background .1s}
+.team-row:last-child{border-bottom:none}
+.team-row:hover{background:var(--bg)}
+.team-member{display:flex;align-items:center;gap:9px}
+.team-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:white;flex-shrink:0;font-family:'DM Mono',monospace}
+.team-member-name{font-size:12px;font-weight:500}
+.team-member-email{font-size:10px;color:var(--muted)}
+.leadflow-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:2px 7px;border-radius:10px}
+.leadflow-pill.on{background:var(--green-bg);color:var(--green);border:1px solid var(--green-mid)}
+.leadflow-pill.off{background:var(--red-bg);color:var(--red);border:1px solid var(--red-mid)}
+.leadflow-pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+/* Leads view */
+.leads-view{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.leads-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
+.leads-toolbar-left{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap}
+.filter-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:5px;border:1px solid var(--border);font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;background:var(--surface);transition:all .1s;white-space:nowrap}
+.filter-chip:hover{border-color:var(--accent);color:var(--accent)}
+.filter-chip.active{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.stage-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.bulk-action-bar{display:none;align-items:center;gap:8px;padding:8px 16px;background:var(--accent-light);border-bottom:1px solid var(--accent-light);flex-shrink:0;flex-wrap:wrap}
+.bulk-action-bar.visible{display:flex}
+.sel-count{font-size:13px;font-weight:700;color:var(--accent);font-family:'DM Mono',monospace}
+.leads-table-wrap{flex:1;overflow:auto}
+.leads-full-table{width:100%;border-collapse:collapse;min-width:900px}
+.leads-full-table thead tr{background:var(--surface2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:1}
+.leads-full-table th{padding:8px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.leads-full-table td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
+.leads-full-table tbody tr{background:var(--surface);transition:background .1s}
+.leads-full-table tbody tr:hover{background:var(--surface2)}
+.leads-full-table tbody tr.selected,.leads-full-table tbody tr.selected-row{background:var(--accent-light)}
+.leads-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0}
+.pagination{display:flex;gap:3px}
+.page-btn{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-mid)}
+.page-btn.active{background:var(--accent);color:white;border-color:var(--accent)}
+.bulk-assign-list{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto}
+.bulk-assign-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--border);border-radius:7px;cursor:pointer;transition:all .1s}
+.bulk-assign-item:hover,.bulk-assign-item.selected{border-color:var(--accent);background:var(--accent-light)}
+.assign-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.bulk-assign-item.selected .assign-check{background:var(--accent);border-color:var(--accent)}
+.bulk-compose-area{width:100%;min-height:100px;border:1px solid var(--border);border-radius:7px;padding:10px;font-family:'DM Sans',sans-serif;font-size:12px;resize:vertical;outline:none;background:var(--bg)}
+.bulk-compose-area:focus{border-color:var(--accent)}
+.merge-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.merge-chip{font-size:10px;font-weight:500;color:var(--accent);background:var(--accent-light);border:1px solid var(--accent-light);padding:2px 7px;border-radius:4px;cursor:pointer;font-family:'DM Mono',monospace}
+.merge-chip:hover{background:var(--accent);color:white}
+.placeholder-view{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:11px;color:var(--muted)}
+.placeholder-view svg{width:36px;height:36px;opacity:.2}
+.placeholder-view h3{font-size:16px;font-weight:600;color:var(--text-mid);letter-spacing:-.3px}
+.placeholder-view p{font-size:12px;max-width:280px;text-align:center;line-height:1.6}
+
+/* -- KANBAN -- */
+.kanban-col{min-width:200px;flex:1;display:flex;flex-direction:column;gap:8px}
+.kanban-col-head{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--text-mid);margin-bottom:4px;padding:0 2px}
+.kanban-card{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:10px 12px;cursor:pointer;transition:border-color .1s}
+.kanban-card:hover{border-color:var(--accent)}
+.kanban-card.urgent{border-left:3px solid var(--red)}
+.kanban-card.ctc{border-left:3px solid var(--green)}
+.kc-name{font-size:12px;font-weight:500;margin-bottom:2px}
+.kc-meta{font-size:10px;color:var(--muted);margin-bottom:4px}
+.kc-fu{font-size:10px;color:var(--text-mid)}
+/* -- CALENDAR -- */
+.cal-day{background:var(--surface);padding:8px;min-height:90px;display:flex;flex-direction:column;gap:3px}
+.cal-day:hover{background:var(--surface2)}
+.muted-day{background:var(--bg);opacity:.5}
+.today-day{background:var(--surface2);border:1px solid var(--accent)}
+.cal-day-num{font-size:11px;font-weight:500;color:var(--text-mid);margin-bottom:2px}
+.today-num{color:var(--accent);font-weight:700}
+.cal-event{font-size:9px;padding:2px 5px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.accent-ev{background:var(--accent-light);color:var(--accent)}
+.amber-ev{background:var(--amber-bg);color:var(--amber)}
+.green-ev{background:var(--green-bg);color:var(--green)}
+/* -- EMAIL -- */
+.email-folder{display:flex;align-items:center;padding:6px 10px;border-radius:5px;font-size:12px;color:var(--text-mid);cursor:pointer;margin:1px 0}
+.email-folder:hover{background:var(--bg)}
+.active-folder{background:var(--accent-light);color:var(--accent);font-weight:500}
+.email-row{padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer}
+.email-row:hover{background:var(--surface2)}
+.email-row.unread{border-left:3px solid var(--accent)}
+/* -- PURPLE BG -- */
+.badge-new{background:var(--purple-bg) !important;color:var(--purple) !important}
+</style>
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="logo-mark">Command</div><div class="logo-sub">Mortgage CRM</div></div>
+  <div class="nav-section">
+    <div class="nav-label">Workspace</div>
+    <div class="nav-item active" onclick="switchView('dashboard',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</div>
+    <div class="nav-item" onclick="switchView('leads',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>All Leads <span class="nav-badge">38</span></div>
+    <div class="nav-item" onclick="switchView('pipeline',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Pipeline</div>
+    <div class="nav-item" onclick="switchView('dialer',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Dialer <span class="nav-badge">8</span></div>
+    <div class="nav-item" onclick="switchView('sms',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Messaging <span class="nav-badge" style="background:var(--green)">3</span></div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Integrations</div>
+    <div class="nav-item" onclick="switchView('calendar',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Google Calendar <span class="conn-dot"></span></div>
+    <div class="nav-item" onclick="switchView('email',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Gmail <span class="conn-dot"></span></div>
+    <div class="nav-item" onclick="switchView('arive',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Arive LOS</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Analytics</div>
+    <div class="nav-item" onclick="switchView('reports',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</div>
+    <div class="nav-item" onclick="switchView('team',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Team &amp; Users</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="nav-item" onclick="switchView('settings',this)" style="margin-bottom:4px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</div>
+    <div class="user-card">
+      <div class="user-avatar">JM</div>
+      <div style="flex:1;min-width:0">
+        <div class="user-name">Jake Morrison</div>
+        <div style="display:flex;align-items:center;gap:5px"><div class="user-role">Loan Officer</div><div id="leadflowDot" style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0"></div></div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="main">
+  <div class="topbar">
+    <span class="page-title" id="pageTitle">Dashboard</span>
+    <div class="topbar-sep"></div>
+    <span class="topbar-date" id="topbarDate"></span>
+    <div class="search-bar"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Search leads, loans, contacts..."></div>
+    <button class="btn btn-ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>Filter</button>
+    <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Lead</button>
+  </div>
+  <div class="tab-bar" id="tabBar">
+    <div class="tab active">Overview</div><div class="tab">My Pipeline</div><div class="tab">Closed Loans</div>
+  </div>
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div id="view-dashboard" class="view active" style="display:flex">
+      <div class="center-panel">
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-label">Active Pipeline</div><div class="stat-value">$4.2M</div><div class="stat-sub"><span class="stat-up">+12%</span> vs last month</div></div>
+          <div class="stat-card"><div class="stat-label">Leads This Month</div><div class="stat-value">38</div><div class="stat-sub"><span class="stat-up">+8</span> new this week</div></div>
+          <div class="stat-card"><div class="stat-label">Loans In Process</div><div class="stat-value">14</div><div class="stat-sub">Avg 22 days to close</div></div>
+          <div class="stat-card"><div class="stat-label">Closed MTD</div><div class="stat-value">7</div><div class="stat-sub"><span class="stat-up">$1.84M</span> volume</div></div>
+        </div>
+        <div>
+          <div class="section-header"><span class="section-title">Pipeline Overview</span><button class="btn btn-ghost btn-sm">View All</button></div>
+          <div class="pipeline-row">
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#94a3b8"></div><div class="stage-name">Nurture</div><div class="stage-count">15</div><div class="stage-value">$4.0M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:var(--purple)"></div><div class="stage-name">New Lead</div><div class="stage-count">12</div><div class="stage-value">$3.1M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:var(--accent)"></div><div class="stage-name">Application</div><div class="stage-count">9</div><div class="stage-value">$2.3M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:var(--amber)"></div><div class="stage-name">Processing</div><div class="stage-count">7</div><div class="stage-value">$1.8M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:#b45309"></div><div class="stage-name">Underwriting</div><div class="stage-count">5</div><div class="stage-value">$1.2M</div></div>
+            <div class="pipeline-stage"><div class="stage-bar" style="background:var(--green)"></div><div class="stage-name">Clear to Close</div><div class="stage-count">3</div><div class="stage-value">$780K</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-header"><span class="section-title">Recent Leads</span><button class="btn btn-ghost btn-sm" onclick="switchView('leads',document.querySelector('.nav-item:nth-child(2)'))">View All</button></div>
+          <div class="leads-table">
+            <div class="table-head"><div class="th">Lead</div><div class="th">Loan Type</div><div class="th">Amount</div><div class="th">Stage</div><div class="th">ID</div><div class="th">Follow-up</div><div class="th">Actions</div></div>
+            <div class="table-row"><div class="lead-info"><div class="lead-initials">MR</div><div><div class="lead-name-txt">Marcus Rivera</div><div class="lead-phone">(702) 555-0183 - Las Vegas</div></div></div><div class="td">Purchase / Conv</div><div class="td">$485,000</div><div class="td"><span class="badge badge-app">Application</span></div><div class="td"><span class="lead-id">#LD-2041</span></div><div class="td fu-soon">Today 2:00 PM</div><div class="td"><div class="action-btns"><div class="icon-btn" title="Call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="icon-btn" title="SMS" onclick="switchView('sms',document.querySelectorAll('.nav-item')[4])"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="icon-btn" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div></div></div></div>
+            <div class="table-row"><div class="lead-info"><div class="lead-initials">SK</div><div><div class="lead-name-txt">Sarah Kim</div><div class="lead-phone">(310) 555-0247 - Los Angeles</div></div></div><div class="td">Refi / FHA</div><div class="td">$620,000</div><div class="td"><span class="badge badge-uw">Underwriting</span></div><div class="td"><span class="lead-id">#LD-2038</span></div><div class="td fu-ok">Tomorrow</div><div class="td"><div class="action-btns"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div></div></div></div>
+            <div class="table-row"><div class="lead-info"><div class="lead-initials">DT</div><div><div class="lead-name-txt">David Thornton</div><div class="lead-phone">(480) 555-0391 - Phoenix</div></div></div><div class="td">Purchase / VA</div><div class="td">$375,000</div><div class="td"><span class="badge badge-new">New Lead</span></div><div class="td"><span class="lead-id">#LD-2045</span></div><div class="td fu-urgent">Call Now</div><div class="td"><div class="action-btns"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div></div></div></div>
+            <div class="table-row"><div class="lead-info"><div class="lead-initials">PL</div><div><div class="lead-name-txt">Priya Lahiri</div><div class="lead-phone">(415) 555-0822 - San Francisco</div></div></div><div class="td">Refi / Jumbo</div><div class="td">$1,250,000</div><div class="td"><span class="badge badge-close">Clear to Close</span></div><div class="td"><span class="lead-id">#LD-2029</span></div><div class="td fu-ok">Closing Mar 8</div><div class="td"><div class="action-btns"><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="rp-section">
+          <div class="rp-title">Web Dialer</div>
+          <div class="dialer-card">
+            <div class="dialer-status-row"><div class="status-dot"></div><span class="status-label">Ready</span></div>
+            <div class="dialer-number">(480) 555-0391</div>
+            <div class="dialer-contact">David Thornton - #LD-2045</div>
+            <div class="dialer-btns">
+              <button class="d-btn call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call</button>
+              <button class="d-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>SMS</button>
+              <button class="d-btn">Skip</button>
+            </div>
+            <div class="power-row"><div><div class="power-label">Power Dial</div><div class="power-queue">8 leads queued</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+          </div>
+        </div>
+        <div class="tasks-scroll">
+          <div class="task-rp-title">Follow-ups Today</div>
+          <div class="task-item task-urgent"><div class="task-checkbox" onclick="this.style.background=this.dataset.done?'':(this.dataset.done=1,'var(--accent)');this.dataset.done=this.dataset.done?0:1"></div><div><div class="task-text">Call David Thornton - new lead, 5-min window</div><div class="task-meta">Urgent - #LD-2045</div></div></div>
+          <div class="task-item"><div class="task-checkbox" onclick="this.style.background=this.dataset.done?'':(this.dataset.done=1,'var(--accent)')"></div><div><div class="task-text">Send pre-approval letter to Marcus Rivera</div><div class="task-meta">2:00 PM - #LD-2041</div></div></div>
+          <div class="task-item"><div class="task-checkbox" onclick="this.style.background=this.dataset.done?'':(this.dataset.done=1,'var(--accent)')"></div><div><div class="task-text">Request docs from Sarah Kim</div><div class="task-meta">3:30 PM - #LD-2038</div></div></div>
+          <div class="task-item"><div class="task-checkbox" onclick="this.style.background=this.dataset.done?'':(this.dataset.done=1,'var(--accent)')"></div><div><div class="task-text">Confirm closing with Lahiri title co.</div><div class="task-meta">4:00 PM - #LD-2029</div></div></div>
+        </div>
+        <div class="rp-section">
+          <div class="rp-title">Today's Calendar</div>
+          <div class="cal-item"><div class="cal-time">9am</div><div class="cal-pip" style="background:#64748b"></div><div><div class="cal-name">Team Standup</div><div class="cal-sub">Google Meet - 30 min</div></div></div>
+          <div class="cal-item"><div class="cal-time">11am</div><div class="cal-pip" style="background:var(--accent)"></div><div><div class="cal-name">Rivera Consult</div><div class="cal-sub">Phone - Prequal</div></div></div>
+          <div class="cal-item"><div class="cal-time">2pm</div><div class="cal-pip" style="background:var(--amber)"></div><div><div class="cal-name">Kim Rate Review</div><div class="cal-sub">Zoom - Refi</div></div></div>
+          <div class="cal-item"><div class="cal-time">4pm</div><div class="cal-pip" style="background:var(--green)"></div><div><div class="cal-name">Lahiri Pre-closing</div><div class="cal-sub">Phone - CTC</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL LEADS with bulk actions -->
+    <div id="view-leads" class="view">
+      <div class="leads-view">
+        <div class="leads-toolbar">
+          <div class="leads-toolbar-left">
+            <div class="search-bar" style="max-width:200px;margin-left:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Search leads..." oninput="filterLeads(this.value)"></div>
+            <div class="filter-chip active" onclick="setLeadsFilter('all',this)">All <span style="font-size:9px;opacity:.7">38</span></div>
+            <div class="filter-chip" onclick="setLeadsFilter('new',this)"><span class="stage-dot" style="background:var(--purple)"></span>New</div>
+            <div class="filter-chip" onclick="setLeadsFilter('app',this)"><span class="stage-dot" style="background:var(--accent)"></span>Application</div>
+            <div class="filter-chip" onclick="setLeadsFilter('uw',this)"><span class="stage-dot" style="background:#b45309"></span>Underwriting</div>
+            <div class="filter-chip" onclick="setLeadsFilter('ctc',this)"><span class="stage-dot" style="background:var(--green)"></span>CTC</div>
+            <div class="filter-chip" onclick="setLeadsFilter('proc',this)"><span class="stage-dot" style="background:var(--amber)"></span>Processing</div><div class="filter-chip" onclick="setLeadsFilter('uw',this)"><span class="stage-dot" style="background:#c2410c"></span>Underwriting</div><div class="filter-chip" onclick="setLeadsFilter('ctc',this)"><span class="stage-dot" style="background:var(--green)"></span>CTC</div><div class="filter-chip" onclick="setLeadsFilter('nurture',this)"><span class="stage-dot" style="background:#94a3b8"></span>Nurture</div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-ghost btn-sm">Import</button>
+            <button class="btn btn-primary btn-sm">+ New Lead</button>
+          </div>
+        </div>
+        <div class="bulk-action-bar" id="bulkBar">
+          <span class="sel-count" id="selCount">0</span>&nbsp;leads selected
+          <div style="width:1px;height:14px;background:#bfdbfe;margin:0 4px"></div>
+          <button class="btn btn-sm" style="background:var(--surface);border-color:#bfdbfe;color:var(--accent)" onclick="openBulkAssign()">Assign to LO</button>
+          <button class="btn btn-sm" style="background:var(--surface);border-color:#bfdbfe;color:var(--accent)" onclick="openModal('bulkSmsModal')">Bulk SMS</button>
+          <button class="btn btn-sm" style="background:var(--surface);border-color:#bfdbfe;color:var(--accent)" onclick="openModal('bulkEmailModal')">Bulk Email</button>
+          <button class="btn btn-sm" style="background:var(--surface);border-color:#bfdbfe;color:var(--accent)" onclick="openModal('dripModal')">Add to Drip</button>
+          <button class="btn btn-sm btn-ghost" onclick="clearSelection()">x Clear</button>
+          <div style="margin-left:auto;font-size:11px;color:var(--accent)">All changes logged to audit trail</div>
+        </div>
+        <div class="leads-table-wrap">
+          <table class="leads-full-table" id="leadsTable">
+            <thead><tr>
+              <th style="width:36px"><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th>
+              <th>Lead</th><th>Loan Type</th><th>Amount</th><th>Stage</th>
+              <th>Assigned LO</th><th>State</th><th>Source</th><th>Follow-up</th><th>ID</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="leadsBody"></tbody>
+          </table>
+        </div>
+        <div class="leads-footer">
+          <div style="font-size:11px;color:var(--muted)">Showing <strong id="leadCount">38</strong> leads</div>
+          <div class="pagination"><div class="page-btn">&#8249;</div><div class="page-btn active">1</div><div class="page-btn">2</div><div class="page-btn">&#8250;</div></div>
+          <div style="font-size:11px;color:var(--muted)">Per page <select class="form-select" style="width:56px;height:24px;font-size:11px;display:inline-block;width:auto"><option>20</option><option selected>50</option></select></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIALER -->
+    <div id="view-dialer" class="view">
+      <div class="dialer-full">
+        <div class="queue-list">
+          <div class="queue-head">Queue <span style="color:var(--accent);font-weight:600">8</span></div>
+          <div class="queue-item active-call"><div class="queue-num">1</div><div><div class="queue-name">David Thornton</div><div class="queue-phone">(480) 555-0391</div></div><span class="badge badge-new" style="font-size:9px">New</span></div>
+          <div class="queue-item"><div class="queue-num">2</div><div><div class="queue-name">Marcus Rivera</div><div class="queue-phone">(702) 555-0183</div></div><span class="badge badge-app" style="font-size:9px">App</span></div>
+          <div class="queue-item"><div class="queue-num">3</div><div><div class="queue-name">Linda Castillo</div><div class="queue-phone">(602) 555-0558</div></div></div>
+          <div class="queue-item"><div class="queue-num">4</div><div><div class="queue-name">Tom Bridger</div><div class="queue-phone">(404) 555-0211</div></div></div>
+        </div>
+        <div class="big-dialer">
+          <div class="dialer-status-row"><div class="status-dot"></div><span class="status-label">Ready</span></div>
+          <div class="big-number">(480) 555-0391</div>
+          <div class="big-contact">David Thornton - New Lead - #LD-2045</div>
+          <div class="keypad"><div class="key">1</div><div class="key">2</div><div class="key">3</div><div class="key">4</div><div class="key">5</div><div class="key">6</div><div class="key">7</div><div class="key">8</div><div class="key">9</div><div class="key">*</div><div class="key">0</div><div class="key">#</div></div>
+          <div class="big-btns">
+            <button class="big-btn sms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+            <button class="big-btn call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.97-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button>
+            <button class="big-btn hang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SMS / MESSAGING -->
+    <div id="view-sms" class="view">
+      <div class="sms-layout">
+        <div class="sms-list">
+          <div class="sms-list-head"><span class="sms-list-title">Messages</span><button class="btn btn-primary btn-sm">+ New</button></div>
+          <div class="sms-list-body">
+            <div class="sms-thread active" onclick="selectThread(this,'DT','David Thornton','(480) 555-0391','#LD-2045',false,false)"><div class="sms-thread-av">DT</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">David Thornton</div><div class="sms-thread-time">9:14 AM</div></div><div class="sms-thread-preview">Thanks for reaching out!</div></div><div class="sms-unread"></div></div>
+            <div class="sms-thread" onclick="selectThread(this,'MR','Marcus Rivera','(702) 555-0183','#LD-2041',false,false)"><div class="sms-thread-av">MR</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">Marcus Rivera</div><div class="sms-thread-time">8:52 AM</div></div><div class="sms-thread-preview">Got it, I'll gather the docs today</div></div><div class="sms-unread"></div></div>
+            <div class="sms-thread" onclick="selectThread(this,'SK','Sarah Kim','(310) 555-0247','#LD-2038',false,false)"><div class="sms-thread-av">SK</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">Sarah Kim</div><div class="sms-thread-time">Yesterday</div></div><div class="sms-thread-preview">Sounds good, see you then!</div></div></div>
+            <div class="sms-thread" onclick="selectThread(this,'RN','Rosa Nguyen','(512) 555-0614','#LD-2033',true,false)"><div class="sms-thread-av" style="background:var(--red-bg);border-color:var(--red-mid);color:var(--red)">RN</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">Rosa Nguyen</div><div class="sms-thread-time">Mar 3</div></div><div class="sms-thread-preview">Opted out - SMS blocked</div></div></div>
+            <div class="sms-thread" onclick="selectThread(this,'JW','James Weller','(214) 555-0164','#LD-2036',false,false)"><div class="sms-thread-av">JW</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;justify-content:space-between"><div class="sms-thread-name">James Weller</div><div class="sms-thread-time">Mar 2</div></div><div class="sms-thread-preview">Will the rate be locked before...</div></div></div>
+          </div>
+        </div>
+        <div class="sms-convo">
+          <div class="sms-convo-head">
+            <div class="sms-thread-av" id="convoAv" style="width:32px;height:32px">DT</div>
+            <div><div class="sms-convo-name" id="convoName">David Thornton</div><div class="sms-convo-phone" id="convoPhone">(480) 555-0391 - #LD-2045</div></div>
+            <div id="convoConsentBadge" style="margin-left:10px"><span class="consent-badge">Consented</span></div>
+            <div class="sms-convo-actions"><button class="btn btn-ghost btn-sm">Call</button><button class="btn btn-ghost btn-sm" onclick="openModal('dripModal')">Drip</button></div>
+          </div>
+          <div id="optoutBanner" style="display:none;padding:8px 14px;border-bottom:1px solid var(--red-mid)">
+            <div class="optout-banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--red);flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><div style="flex:1"><div class="optout-banner-title">SMS Blocked - Contact opted out (STOP received)</div><div class="optout-banner-body">Sending to opted-out contacts violates TCPA. Messaging resumes if they text START.</div></div></div>
+          </div>
+          <div id="consentNotice" style="display:none;padding:8px 14px;background:var(--accent-light);border-bottom:1px solid var(--accent-light);font-size:11px;color:var(--accent)">First message to this contact — TCPA opt-out notice will be appended automatically.</div>
+          <div class="sms-messages" id="smsMessages"></div>
+          <div class="sms-input-area">
+            <div id="optoutOverlay" style="display:none;position:absolute;inset:0;background:rgba(254,242,242,.96);z-index:10;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-top:1px solid var(--red-mid)"><div style="font-size:12px;font-weight:600;color:var(--red)">SMS Blocked - Contact Opted Out</div><div style="font-size:11px;color:var(--red)">Contact will resume if they text START.</div></div>
+            <div class="sms-toolbar">
+              <button class="sms-toolbar-btn" onclick="openModal('cannedModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Canned</button>
+              <button class="sms-toolbar-btn" onclick="openModal('dripModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Drip</button>
+              <button class="sms-toolbar-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Schedule</button>
+            </div>
+            <div class="sms-compose"><textarea class="sms-textarea" id="smsInput" placeholder="Type a message..." oninput="document.getElementById('charCount').textContent=this.value.length+' / 160'"></textarea><button class="sms-send-btn" onclick="sendMessage()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:white"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+            <div class="sms-char" id="charCount">0 / 160</div>
+          </div>
+        </div>
+        <div class="sms-sidebar">
+          <div class="sms-tabs">
+            <div class="sms-tab active" onclick="switchSmsTab('canned',this)">Canned</div>
+            <div class="sms-tab" onclick="switchSmsTab('drip',this)">Drip</div>
+            <div class="sms-tab" onclick="switchSmsTab('compliance',this)" style="position:relative">Compliance<span style="position:absolute;top:6px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--red)"></span></div>
+          </div>
+          <div class="sms-panel" id="panel-canned">
+            <div style="margin-bottom:8px"><input class="form-input" style="height:28px;font-size:11px" placeholder="Search..." oninput="filterCanned(this.value)"></div>
+            <div id="cannedList"></div>
+          </div>
+          <div class="sms-panel" id="panel-drip" style="display:none">
+            <div class="drip-campaign"><div class="drip-head"><div><div class="drip-name">New Lead Nurture</div><div class="drip-meta">5 steps - 14 days</div></div><div class="drip-toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div><div class="drip-steps"><div class="drip-step"><div class="drip-step-day">Day 0</div><div class="drip-step-txt">Initial outreach + STOP notice</div></div><div class="drip-step"><div class="drip-step-day">Day 3</div><div class="drip-step-txt">Rate check-in</div></div></div><button class="drip-assign-btn" onclick="openModal('dripModal')">+ Enroll Contact</button></div>
+            <div class="drip-campaign"><div class="drip-head"><div><div class="drip-name">Rate Drop Alert</div><div class="drip-meta">3 steps - 30 days</div></div><div class="drip-toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div><button class="drip-assign-btn" onclick="openModal('dripModal')">+ Enroll Contact</button></div>
+          </div>
+          <div class="sms-panel" id="panel-compliance" style="display:none">
+            <div style="background:var(--red-bg);border:1px solid var(--red-mid);border-radius:7px;padding:9px 11px;margin-bottom:10px;font-size:11px;color:var(--red);font-weight:600">1 Active Opt-Out: Rosa Nguyen</div>
+            <div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Audit Log</div>
+            <div class="compliance-log-row"><div class="log-icon stop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><div style="flex:1"><div class="log-name">Rosa Nguyen</div><div class="log-detail">Replied STOP - SMS blocked</div></div><div class="log-time">Mar 3</div></div>
+            <div class="compliance-log-row"><div class="log-icon consent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="log-name">David Thornton</div><div class="log-detail">Consent recorded</div></div><div class="log-time">Today</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="view-settings" class="view" style="overflow:hidden">
+      <div class="settings-layout">
+        <div class="settings-nav">
+          <div class="settings-nav-label">My Account</div>
+          <div class="settings-nav-item active" onclick="switchSettingsTab('profile',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</div>
+          <div class="settings-nav-item" onclick="switchSettingsTab('leadflow',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Leadflow</div>
+          <div class="settings-nav-item" onclick="switchSettingsTab('licensing',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Licensing</div>
+          <div class="settings-nav-item" onclick="switchSettingsTab('notifications',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Notifications</div>
+          <div class="settings-nav-label">System</div>
+          <div class="settings-nav-item" onclick="switchSettingsTab('integrations',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Integrations</div>
+          <div class="settings-nav-item" onclick="switchSettingsTab('security',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Security</div>
+        </div>
+        <div class="settings-content">
+          <div class="settings-section active" id="stab-profile">
+            <div class="settings-section-title">Profile</div><div class="settings-section-sub">Your personal information and role</div>
+            <div class="settings-card"><div class="settings-card-head"><div><div class="settings-card-title">Personal Information</div></div><button class="btn btn-primary btn-sm">Save</button></div><div class="settings-card-body"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="form-row" style="margin:0"><label class="form-label">First Name</label><input class="form-input" value="Jake"></div><div class="form-row" style="margin:0"><label class="form-label">Last Name</label><input class="form-input" value="Morrison"></div><div class="form-row" style="margin:0"><label class="form-label">Email</label><input class="form-input" value="jake.morrison@premierlending.com"></div><div class="form-row" style="margin:0"><label class="form-label">Federal NMLS #</label><input class="form-input" value="1234567"></div></div></div></div>
+          </div>
+          <div class="settings-section" id="stab-leadflow">
+            <div class="settings-section-title">Leadflow</div><div class="settings-section-sub">Control how new leads are routed to you</div>
+            <div class="settings-card"><div class="settings-card-head"><div><div class="settings-card-title">Incoming Leadflow</div></div></div><div class="settings-card-body">
+              <div id="leadflowStatusBar" class="leadflow-status on"><div class="leadflow-indicator"></div><div style="flex:1"><div class="leadflow-status-text" id="leadflowStatusText">Leadflow Active</div></div><div class="big-toggle on" id="leadflowToggle" onclick="toggleLeadflow()"></div></div>
+              <div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Daily Lead Cap</div></div><input class="form-input" style="width:70px;text-align:center" value="10"></div>
+            </div></div>
+            <div class="settings-card"><div class="settings-card-head"><div><div class="settings-card-title">Vacation / Out-of-Office</div></div><div id="oooActiveBadge" style="display:none"><span style="font-size:10px;font-weight:600;color:var(--amber)">OOO Active</span></div></div><div class="settings-card-body">
+              <div id="oooActiveBar" style="margin-bottom:12px;background:var(--amber-bg);border:1px solid var(--amber-mid);border-radius:7px;padding:10px 13px;display:none;align-items:center;gap:10px"><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--amber)" id="oooActiveText">Out of Office</div></div><button class="btn btn-ghost btn-sm" onclick="cancelOOO()">Cancel</button></div>
+              <div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Enable OOO Window</div></div><div class="big-toggle off" id="oooToggle" onclick="toggleOOO()"></div></div>
+              <div id="oooDateFields" style="display:none;padding-top:8px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px"><div class="form-row" style="margin:0"><label class="form-label">Start</label><input class="form-input" type="date" id="oooStart" value="2026-03-15"></div><div class="form-row" style="margin:0"><label class="form-label">Return</label><input class="form-input" type="date" id="oooEnd" value="2026-03-22"></div></div><button class="btn btn-primary" onclick="scheduleOOO()" style="width:100%;justify-content:center">Schedule OOO</button></div>
+            </div></div>
+          </div>
+          <div class="settings-section" id="stab-licensing">
+            <div class="settings-section-title">State Licensing</div><div class="settings-section-sub">Only leads in licensed states are routed to you</div>
+            <div class="settings-card"><div class="settings-card-head"><div><div class="settings-card-title">Licensed States</div></div><button class="btn btn-primary btn-sm" onclick="openModal('addLicenseModal')">+ Add State</button></div><div class="settings-card-body"><div id="licenseList"></div></div></div>
+            <div class="settings-card"><div class="settings-card-head"><div><div class="settings-card-title">All States Map</div><div class="settings-card-sub">Blue = active, Amber = expiring, Red = expired</div></div></div><div class="settings-card-body"><div class="state-grid" id="stateGrid"></div></div></div>
+          </div>
+          <div class="settings-section" id="stab-notifications">
+            <div class="settings-section-title">Notifications</div><div class="settings-section-sub">Manage alerts</div>
+            <div class="settings-card"><div class="settings-card-body"><div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">New Lead Assigned</div></div><div class="big-toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div><div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Lead Replied to SMS</div></div><div class="big-toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div><div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Lead Opt-Out (STOP)</div></div><div class="big-toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div></div></div>
+          </div>
+          <div class="settings-section" id="stab-integrations">
+            <div class="settings-section-title">Integrations</div><div class="settings-section-sub">Connected services</div>
+            <div class="settings-card"><div class="settings-card-body"><div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Google Calendar</div><div class="settings-row-desc"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="660c070d03480b0914140f15090826010b070f0a4805090b">[email&#160;protected]</a></div></div><span class="consent-badge">Connected</span></div><div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Gmail</div><div class="settings-row-desc"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f19b909a94df9c9e838398829e9fb1969c90989ddf929e9c">[email&#160;protected]</a></div></div><span class="consent-badge">Connected</span></div><div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Arive LOS</div></div><button class="btn btn-primary btn-sm">Connect</button></div></div></div>
+          </div>
+          <div class="settings-section" id="stab-security">
+            <div class="settings-section-title">Security</div><div class="settings-section-sub">Password and 2FA</div>
+            <div class="settings-card"><div class="settings-card-body"><div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Password</div><div class="settings-row-desc">Last changed 45 days ago</div></div><button class="btn btn-ghost btn-sm">Change</button></div><div class="settings-row"><div class="settings-row-info"><div class="settings-row-label">Two-Factor Authentication</div></div><div class="big-toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM -->
+    <div id="view-team" class="view" style="overflow:hidden">
+      <div style="flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin:-20px -24px 0;padding:0 24px;background:var(--surface)">
+          <div class="tab active" onclick="switchTeamTab('roster',this)">Team Roster</div>
+          <div class="tab" onclick="switchTeamTab('override',this)">Lead Override</div>
+          <div class="tab" onclick="switchTeamTab('auditlog',this)">Audit Log</div>
+        </div>
+        <div id="team-panel-roster" style="display:flex;flex-direction:column;gap:12px;padding-top:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:16px;font-weight:600">Team &amp; Users</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Manage users, roles, and leadflow</div></div><div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="openModal('inviteUserModal')">+ Invite User</button></div></div>
+          <div class="team-table">
+            <div class="team-head"><div class="th">User</div><div class="th">Role</div><div class="th">Leadflow</div><div class="th">Licensed States</div><div class="th">Active Loans</div><div class="th">Actions</div></div>
+            <div class="team-row"><div class="team-member"><div class="team-av" style="background:var(--accent)">JM</div><div><div class="team-member-name">Jake Morrison <span style="font-size:9px;color:var(--accent)">(You)</span></div><div class="team-member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddb7bcb6b89dadafb8b0b4b8afb1b8b3b9b4b3baf3beb2b0">[email&#160;protected]</a></div></div></div><div><span class="role-badge role-lo">Loan Officer</span></div><div><div class="leadflow-pill on"><div class="leadflow-pill-dot"></div>Active</div></div><div><span class="badge badge-app" style="font-size:9px;margin-right:2px">NV</span><span class="badge badge-app" style="font-size:9px;margin-right:2px">AZ</span><span class="badge badge-app" style="font-size:9px">CA</span></div><div style="font-size:13px;font-weight:500">14</div><div><button class="btn btn-ghost btn-sm" onclick="switchView('settings',document.querySelectorAll('.nav-item')[10])">Edit</button></div></div>
+            <div class="team-row"><div class="team-member"><div class="team-av" style="background:#64748b">SL</div><div><div class="team-member-name">Sandra Lee</div><div class="team-member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4f3c2e212b3d2e0f3f3d2a22262a3d232a212b262128612c2022">[email&#160;protected]</a></div></div></div><div><span class="role-badge role-mgr">Manager</span></div><div><div class="leadflow-pill on"><div class="leadflow-pill-dot"></div>Active</div></div><div><span class="badge badge-app" style="font-size:9px;margin-right:2px">NV</span><span class="badge badge-app" style="font-size:9px">CA</span></div><div style="font-size:13px;font-weight:500">8</div><div><button class="btn btn-ghost btn-sm" onclick="openModal('editUserModal')">Edit</button></div></div>
+            <div class="team-row"><div class="team-member"><div class="team-av" style="background:#059669">RC</div><div><div class="team-member-name">Rafael Cruz</div><div class="team-member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8af8ebecebefe6cafaf8efe7e3eff8e6efe4eee3e4eda4e9e5e7">[email&#160;protected]</a></div></div></div><div><span class="role-badge role-lo">Loan Officer</span></div><div><div class="leadflow-pill off"><div class="leadflow-pill-dot"></div>Paused</div></div><div><span class="badge badge-app" style="font-size:9px;margin-right:2px">TX</span><span class="badge badge-app" style="font-size:9px">CO</span></div><div style="font-size:13px;font-weight:500">11</div><div><button class="btn btn-ghost btn-sm" onclick="openModal('editUserModal')">Edit</button></div></div>
+            <div class="team-row"><div class="team-member"><div class="team-av" style="background:var(--red)">KW</div><div><div class="team-member-name">Kim Walsh</div><div class="team-member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="02696b6f427270676f6b67706e676c666b6c652c616d6f">[email&#160;protected]</a></div></div></div><div><span class="role-badge role-admin">Admin</span></div><div><span style="font-size:11px;color:var(--muted)">N/A</span></div><div style="font-size:11px;color:var(--muted)">All states</div><div style="font-size:13px;font-weight:500">-</div><div><button class="btn btn-ghost btn-sm" onclick="openModal('editUserModal')">Edit</button></div></div>
+          </div>
+        </div>
+        <div id="team-panel-override" style="display:none;flex-direction:column;gap:12px;padding-top:8px">
+          <div><div style="font-size:16px;font-weight:600">Lead Override</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Manually assign any lead to an eligible LO. All overrides are logged.</div></div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden"><div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between"><div style="font-size:12px;font-weight:600">Unassigned Leads</div><span style="font-size:10px;font-weight:600;color:var(--amber);background:var(--amber-bg);padding:2px 8px;border-radius:4px;border:1px solid var(--amber-mid)" id="unassignedCount">4 unassigned</span></div><div id="overrideLeadList"></div></div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden"><div style="padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border)"><div style="font-size:12px;font-weight:600">LO Availability</div></div><div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px" id="loAvailList"></div></div>
+        </div>
+        <div id="team-panel-auditlog" style="display:none;flex-direction:column;gap:12px;padding-top:8px">
+          <div style="display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:16px;font-weight:600">Audit Log</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Every assignment, override, and event - immutable</div></div><button class="btn btn-ghost btn-sm">Export CSV</button></div>
+          <div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm audit-filter-btn active" onclick="filterAudit('all',this)">All</button><button class="btn btn-ghost btn-sm audit-filter-btn" onclick="filterAudit('assign',this)">Assignments</button><button class="btn btn-ghost btn-sm audit-filter-btn" onclick="filterAudit('override',this)">Overrides</button><button class="btn btn-ghost btn-sm audit-filter-btn" onclick="filterAudit('ooo',this)">OOO</button><button class="btn btn-ghost btn-sm audit-filter-btn" onclick="filterAudit('skip',this)">Skips</button></div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden"><div style="display:grid;grid-template-columns:130px 1fr 1.2fr 1fr 90px;gap:8px;padding:8px 16px;background:var(--surface2);border-bottom:1px solid var(--border)"><div class="th">Timestamp</div><div class="th">Lead</div><div class="th">Event</div><div class="th">Actor</div><div class="th">Type</div></div><div id="auditLogRows" style="max-height:400px;overflow-y:auto"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDERS -->
+    <div id="view-pipeline" class="view">
+<div style="padding:16px 20px;flex-shrink:0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+  <span style="font-weight:600;font-size:13px">Pipeline Board</span>
+  <button class="btn btn-primary btn-sm">+ New Lead</button>
+</div>
+<div style="display:flex;gap:0;flex:1;overflow-x:auto;padding:16px;gap:12px">
+  <div class="kanban-col">
+    <div class="kanban-col-head"><span style="width:8px;height:8px;border-radius:50%;background:#64748b;display:inline-block"></span> Nurture <span class="nav-badge" style="background:#64748b">15</span></div>
+    <div class="kanban-card"><div class="kc-name">Tom Bridger</div><div class="kc-meta">Purchase · $320K · AZ</div><div class="kc-fu">Follow-up Mar 10</div></div>
+    <div class="kanban-card"><div class="kc-name">Linda Castillo</div><div class="kc-meta">Refi · $415K · CA</div><div class="kc-fu">Follow-up Mar 12</div></div>
+    <div class="kanban-card"><div class="kc-name">Derek Barnes</div><div class="kc-meta">Purchase · $275K · TX</div><div class="kc-fu">Follow-up Mar 15</div></div>
+  </div>
+  <div class="kanban-col">
+    <div class="kanban-col-head"><span style="width:8px;height:8px;border-radius:50%;background:var(--purple);display:inline-block"></span> New Lead <span class="nav-badge">12</span></div>
+    <div class="kanban-card urgent"><div class="kc-name">David Thornton</div><div class="kc-meta">VA Purchase · $375K · AZ</div><div class="kc-fu" style="color:var(--red)">Call Now</div></div>
+    <div class="kanban-card"><div class="kc-name">Rosa Nguyen</div><div class="kc-meta">FHA Purchase · $295K · TX</div><div class="kc-fu">Today 3:00 PM</div></div>
+    <div class="kanban-card"><div class="kc-name">Carlos Reyes</div><div class="kc-meta">Conv Purchase · $510K · NV</div><div class="kc-fu">Today 4:30 PM</div></div>
+  </div>
+  <div class="kanban-col">
+    <div class="kanban-col-head"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block"></span> Application <span class="nav-badge">9</span></div>
+    <div class="kanban-card"><div class="kc-name">Marcus Rivera</div><div class="kc-meta">Conv Purchase · $485K · NV</div><div class="kc-fu">Today 2:00 PM</div></div>
+    <div class="kanban-card"><div class="kc-name">James Weller</div><div class="kc-meta">Jumbo Purchase · $850K · CA</div><div class="kc-fu">Tomorrow</div></div>
+  </div>
+  <div class="kanban-col">
+    <div class="kanban-col-head"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block"></span> Processing <span class="nav-badge" style="background:var(--amber)">7</span></div>
+    <div class="kanban-card"><div class="kc-name">Angela Torres</div><div class="kc-meta">FHA Refi · $320K · AZ</div><div class="kc-fu">Docs due Mar 8</div></div>
+    <div class="kanban-card"><div class="kc-name">Wei Zhang</div><div class="kc-meta">Conv Purchase · $620K · CA</div><div class="kc-fu">Appraisal ordered</div></div>
+  </div>
+  <div class="kanban-col">
+    <div class="kanban-col-head"><span style="width:8px;height:8px;border-radius:50%;background:#c2410c;display:inline-block"></span> Underwriting <span class="nav-badge" style="background:#c2410c">5</span></div>
+    <div class="kanban-card"><div class="kc-name">Sarah Kim</div><div class="kc-meta">FHA Refi · $620K · CA</div><div class="kc-fu">UW review 2-3 days</div></div>
+    <div class="kanban-card"><div class="kc-name">Raj Patel</div><div class="kc-meta">Conv Purchase · $445K · NV</div><div class="kc-fu">Conditions out</div></div>
+  </div>
+  <div class="kanban-col">
+    <div class="kanban-col-head"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span> Clear to Close <span class="nav-badge" style="background:var(--green)">3</span></div>
+    <div class="kanban-card ctc"><div class="kc-name">Priya Lahiri</div><div class="kc-meta">Jumbo Refi · $1.25M · CA</div><div class="kc-fu" style="color:var(--green)">Closing Mar 8</div></div>
+    <div class="kanban-card ctc"><div class="kc-name">Michael Chen</div><div class="kc-meta">VA Purchase · $390K · AZ</div><div class="kc-fu" style="color:var(--green)">Closing Mar 10</div></div>
+  </div>
+</div>
+</div>
+    <div id="view-calendar" class="view">
+<div style="padding:16px 20px;flex-shrink:0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-weight:600;font-size:13px">March 2026</span>
+    <div style="display:flex;gap:4px">
+      <button class="btn btn-ghost btn-sm">&#8249; Prev</button>
+      <button class="btn btn-ghost btn-sm">Today</button>
+      <button class="btn btn-ghost btn-sm">Next &#8250;</button>
+    </div>
+  </div>
+  <button class="btn btn-primary btn-sm">+ Schedule</button>
+</div>
+<div style="flex:1;overflow:auto;padding:20px">
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border-radius:8px;overflow:hidden">
+    <div style="background:var(--surface2);padding:8px 12px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Sun</div>
+    <div style="background:var(--surface2);padding:8px 12px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Mon</div>
+    <div style="background:var(--surface2);padding:8px 12px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Tue</div>
+    <div style="background:var(--surface2);padding:8px 12px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Wed</div>
+    <div style="background:var(--surface2);padding:8px 12px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Thu</div>
+    <div style="background:var(--surface2);padding:8px 12px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Fri</div>
+    <div style="background:var(--surface2);padding:8px 12px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Sat</div>
+    <div class="cal-day muted-day"></div><div class="cal-day muted-day"></div><div class="cal-day"></div>
+    <div class="cal-day"><div class="cal-day-num">4</div></div>
+    <div class="cal-day"><div class="cal-day-num">5</div></div>
+    <div class="cal-day today-day"><div class="cal-day-num today-num">6</div><div class="cal-event accent-ev">9:00 Team Standup</div><div class="cal-event amber-ev">11:00 Rivera Consult</div><div class="cal-event amber-ev">2:00 Kim Rate Review</div><div class="cal-event green-ev">4:00 Lahiri Pre-close</div></div>
+    <div class="cal-day"><div class="cal-day-num">7</div></div>
+    <div class="cal-day"><div class="cal-day-num">8</div><div class="cal-event green-ev">Lahiri Closing</div></div>
+    <div class="cal-day"><div class="cal-day-num">9</div></div>
+    <div class="cal-day"><div class="cal-day-num">10</div><div class="cal-event green-ev">Chen Closing</div></div>
+    <div class="cal-day"><div class="cal-day-num">11</div></div>
+    <div class="cal-day"><div class="cal-day-num">12</div></div>
+    <div class="cal-day"><div class="cal-day-num">13</div><div class="cal-event accent-ev">Thornton Follow-up</div></div>
+    <div class="cal-day"><div class="cal-day-num">14</div></div>
+    <div class="cal-day"><div class="cal-day-num">15</div></div>
+    <div class="cal-day"><div class="cal-day-num">16</div></div>
+    <div class="cal-day"><div class="cal-day-num">17</div></div>
+    <div class="cal-day"><div class="cal-day-num">18</div></div>
+    <div class="cal-day"><div class="cal-day-num">19</div></div>
+    <div class="cal-day"><div class="cal-day-num">20</div></div>
+    <div class="cal-day"><div class="cal-day-num">21</div></div>
+    <div class="cal-day"><div class="cal-day-num">22</div></div>
+    <div class="cal-day"><div class="cal-day-num">23</div></div>
+    <div class="cal-day"><div class="cal-day-num">24</div></div>
+    <div class="cal-day"><div class="cal-day-num">25</div></div>
+    <div class="cal-day"><div class="cal-day-num">26</div></div>
+    <div class="cal-day"><div class="cal-day-num">27</div></div>
+    <div class="cal-day"><div class="cal-day-num">28</div></div>
+    <div class="cal-day"><div class="cal-day-num">29</div></div>
+    <div class="cal-day"><div class="cal-day-num">30</div></div>
+    <div class="cal-day"><div class="cal-day-num">31</div></div>
+    <div class="cal-day muted-day"></div><div class="cal-day muted-day"></div><div class="cal-day muted-day"></div><div class="cal-day muted-day"></div>
+  </div>
+</div>
+</div>
+    <div id="view-email" class="view">
+<div style="display:flex;flex:1;overflow:hidden">
+  <div style="width:240px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden">
+    <div style="padding:12px;border-bottom:1px solid var(--border)"><button class="btn btn-primary" style="width:100%;justify-content:center">+ Compose</button></div>
+    <div style="padding:4px 8px">
+      <div class="email-folder active-folder">Inbox <span style="margin-left:auto;font-size:10px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:8px">12</span></div>
+      <div class="email-folder">Sent</div>
+      <div class="email-folder">Drafts <span style="margin-left:auto;font-size:10px;color:var(--muted)">3</span></div>
+      <div class="email-folder">Starred</div>
+      <div class="email-folder">Spam</div>
+    </div>
+  </div>
+  <div style="flex:1;display:flex;overflow:hidden">
+    <div style="width:300px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto">
+      <div class="email-row unread" onclick="showEmail(this,'Marcus Rivera','Re: Pre-approval update','Marcus Rivera &lt;mrivera@gmail.com&gt;','Today 8:42 AM','Hi Jake, thanks for the update on my pre-approval. Quick question — if rates drop another 0.25% this week, does it make sense to wait? I have some flexibility on my timeline. Let me know your thoughts. Thanks, Marcus')"><div style="font-weight:600;font-size:12px">Marcus Rivera</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Re: Pre-approval update</div><div style="font-size:10px;color:var(--muted);margin-top:2px">8:42 AM</div></div>
+      <div class="email-row unread" onclick="showEmail(this,'Sarah Kim','Underwriting question','Sarah Kim &lt;sarahkim@outlook.com&gt;','Today 7:15 AM','Jake, the UW came back asking for 2 more months of bank statements. I thought we already sent everything? Can you clarify what exactly they need? Also any update on timeline? Sarah')"><div style="font-weight:600;font-size:12px">Sarah Kim</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Underwriting question</div><div style="font-size:10px;color:var(--muted);margin-top:2px">7:15 AM</div></div>
+      <div class="email-row" onclick="showEmail(this,'David Thornton','VA loan inquiry','David Thornton &lt;dthornton@gmail.com&gt;','Yesterday 4:30 PM','Hi there, I found your contact info through a colleague. I am a veteran looking to purchase a home in Phoenix. My budget is around $375K. Do you have experience with VA loans? What documents will I need to get started?')"><div style="font-size:12px">David Thornton</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">VA loan inquiry</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Yesterday</div></div>
+      <div class="email-row" onclick="showEmail(this,'Priya Lahiri','Closing confirmation','Priya Lahiri &lt;plahiri@corp.com&gt;','Yesterday 2:00 PM','Jake, confirming closing for March 8th at 10am. Title company sent me the closing disclosure. Everything looks correct. Thank you for all your help throughout this process! Looking forward to getting the keys. Priya')"><div style="font-size:12px">Priya Lahiri</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Closing confirmation</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Yesterday</div></div>
+      <div class="email-row" onclick="showEmail(this,'James Weller','Rate lock question','James Weller &lt;jweller@yahoo.com&gt;','Mar 5','Hi Jake, will the rate be locked before we close? I keep hearing about rates moving and getting a bit nervous. Can we lock in now or do we need to wait? -James')"><div style="font-size:12px">James Weller</div><div style="font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Rate lock question</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Mar 5</div></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden" id="emailPane">
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px">Select an email to read</div>
+    </div>
+  </div>
+</div>
+</div>
+    <div id="view-arive" class="view">
+<div style="padding:16px 20px;flex-shrink:0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+  <div style="display:flex;align-items:center;gap:10px">
+    <span style="font-weight:600;font-size:13px">Arive LOS</span>
+    <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--green-bg);color:var(--green);font-weight:600">Connected</span>
+  </div>
+  <button class="btn btn-ghost btn-sm">Sync Now</button>
+</div>
+<div style="padding:20px;flex:1;overflow-y:auto">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+    <div class="stat-card"><div class="stat-label">Active Loans</div><div class="stat-value">14</div><div class="stat-sub">Synced from Arive</div></div>
+    <div class="stat-card"><div class="stat-label">Awaiting Conditions</div><div class="stat-value">6</div><div class="stat-sub"><span class="stat-up">2</span> new today</div></div>
+    <div class="stat-card"><div class="stat-label">Clear to Close</div><div class="stat-value">3</div><div class="stat-sub">This week</div></div>
+  </div>
+  <div class="section-header"><span class="section-title">Active Loan Files</span></div>
+  <table style="width:100%;border-collapse:collapse">
+    <thead><tr style="background:var(--surface2)"><th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Borrower</th><th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Loan #</th><th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Type</th><th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Amount</th><th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Stage</th><th style="padding:8px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px">Last Sync</th><th style="padding:8px 12px"></th></tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 12px;font-size:12px">Priya Lahiri</td><td style="padding:10px 12px;font-size:11px;font-family:'DM Mono',monospace;color:var(--muted)">LN-2029-CAL</td><td style="padding:10px 12px;font-size:12px">Jumbo Refi</td><td style="padding:10px 12px;font-size:12px;font-family:'DM Mono',monospace">$1,250,000</td><td style="padding:10px 12px"><span style="background:var(--green-bg);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600">Clear to Close</span></td><td style="padding:10px 12px;font-size:11px;color:var(--muted)">2 min ago</td><td style="padding:10px 12px"><button class="btn btn-ghost btn-sm" style="font-size:10px">Open in Arive</button></td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 12px;font-size:12px">Sarah Kim</td><td style="padding:10px 12px;font-size:11px;font-family:'DM Mono',monospace;color:var(--muted)">LN-2038-FHA</td><td style="padding:10px 12px;font-size:12px">FHA Refi</td><td style="padding:10px 12px;font-size:12px;font-family:'DM Mono',monospace">$620,000</td><td style="padding:10px 12px"><span style="background:var(--amber-bg);color:var(--amber);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600">Underwriting</span></td><td style="padding:10px 12px;font-size:11px;color:var(--muted)">5 min ago</td><td style="padding:10px 12px"><button class="btn btn-ghost btn-sm" style="font-size:10px">Open in Arive</button></td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 12px;font-size:12px">Marcus Rivera</td><td style="padding:10px 12px;font-size:11px;font-family:'DM Mono',monospace;color:var(--muted)">LN-2041-CNV</td><td style="padding:10px 12px;font-size:12px">Conv Purchase</td><td style="padding:10px 12px;font-size:12px;font-family:'DM Mono',monospace">$485,000</td><td style="padding:10px 12px"><span style="background:var(--accent-light);color:var(--accent);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600">Application</span></td><td style="padding:10px 12px;font-size:11px;color:var(--muted)">12 min ago</td><td style="padding:10px 12px"><button class="btn btn-ghost btn-sm" style="font-size:10px">Open in Arive</button></td></tr>
+      <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 12px;font-size:12px">David Thornton</td><td style="padding:10px 12px;font-size:11px;font-family:'DM Mono',monospace;color:var(--muted)">LN-2045-VA</td><td style="padding:10px 12px;font-size:12px">VA Purchase</td><td style="padding:10px 12px;font-size:12px;font-family:'DM Mono',monospace">$375,000</td><td style="padding:10px 12px"><span style="background:var(--purple-bg);color:var(--purple);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600">New Lead</span></td><td style="padding:10px 12px;font-size:11px;color:var(--muted)">Just now</td><td style="padding:10px 12px"><button class="btn btn-ghost btn-sm" style="font-size:10px">Open in Arive</button></td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+    <div id="view-reports" class="view">
+<div style="padding:16px 20px;flex-shrink:0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+  <span style="font-weight:600;font-size:13px">Reports</span>
+  <div style="display:flex;gap:6px">
+    <select class="form-select" style="height:28px;font-size:11px"><option>This Month</option><option>Last Month</option><option>Last 90 Days</option><option>YTD</option></select>
+    <button class="btn btn-ghost btn-sm">Export CSV</button>
+  </div>
+</div>
+<div style="padding:20px;flex:1;overflow-y:auto">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+    <div class="stat-card"><div class="stat-label">Volume Closed</div><div class="stat-value">$1.84M</div><div class="stat-sub"><span class="stat-up">+18%</span> vs last month</div></div>
+    <div class="stat-card"><div class="stat-label">Units Closed</div><div class="stat-value">7</div><div class="stat-sub">Avg 22 days to close</div></div>
+    <div class="stat-card"><div class="stat-label">Lead-to-App Rate</div><div class="stat-value">42%</div><div class="stat-sub"><span class="stat-up">+5%</span> vs last month</div></div>
+    <div class="stat-card"><div class="stat-label">Calls Made</div><div class="stat-value">184</div><div class="stat-sub">Avg 3.2/lead</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px">
+      <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px">Pipeline Conversion</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">New Lead -> Application</span><span style="font-size:12px;font-weight:600;font-family:'DM Mono',monospace">42%</span></div><div style="height:6px;background:var(--bg);border-radius:3px"><div style="height:6px;width:42%;background:var(--accent);border-radius:3px"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">Application -> Processing</span><span style="font-size:12px;font-weight:600;font-family:'DM Mono',monospace">78%</span></div><div style="height:6px;background:var(--bg);border-radius:3px"><div style="height:6px;width:78%;background:var(--accent);border-radius:3px"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">Processing -> Underwriting</span><span style="font-size:12px;font-weight:600;font-family:'DM Mono',monospace">89%</span></div><div style="height:6px;background:var(--bg);border-radius:3px"><div style="height:6px;width:89%;background:var(--amber);border-radius:3px"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">Underwriting -> CTC</span><span style="font-size:12px;font-weight:600;font-family:'DM Mono',monospace">71%</span></div><div style="height:6px;background:var(--bg);border-radius:3px"><div style="height:6px;width:71%;background:var(--green);border-radius:3px"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px">CTC -> Closed</span><span style="font-size:12px;font-weight:600;font-family:'DM Mono',monospace">95%</span></div><div style="height:6px;background:var(--bg);border-radius:3px"><div style="height:6px;width:95%;background:var(--green);border-radius:3px"></div></div></div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px">
+      <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px">Lead Source Breakdown</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></div><span style="font-size:12px;flex:1">Zillow</span><span style="font-size:12px;font-family:'DM Mono',monospace">38%</span><span style="font-size:11px;color:var(--muted)">14 leads</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div><span style="font-size:12px;flex:1">Referral</span><span style="font-size:12px;font-family:'DM Mono',monospace">27%</span><span style="font-size:11px;color:var(--muted)">10 leads</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0"></div><span style="font-size:12px;flex:1">Realtor.com</span><span style="font-size:12px;font-family:'DM Mono',monospace">19%</span><span style="font-size:11px;color:var(--muted)">7 leads</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><div style="width:8px;height:8px;border-radius:50%;background:var(--purple);flex-shrink:0"></div><span style="font-size:12px;flex:1">Direct/Other</span><span style="font-size:12px;font-family:'DM Mono',monospace">16%</span><span style="font-size:11px;color:var(--muted)">6 leads</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+
+<!-- === MODALS === -->
+<div class="modal-backdrop" id="cannedModal">
+  <div class="modal"><div class="modal-head"><span class="modal-title">Insert Canned Response</span><button class="modal-close" onclick="closeModal('cannedModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><div style="margin-bottom:12px"><input class="form-input" placeholder="Search responses…" oninput="filterCannedModal(this.value)"></div><div id="cannedModalList"></div></div></div>
+</div>
+
+<div class="modal-backdrop" id="dripModal">
+  <div class="modal"><div class="modal-head"><span class="modal-title">Enroll in Drip Campaign</span><button class="modal-close" onclick="closeModal('dripModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><div style="margin-bottom:12px;font-size:12px;color:var(--text-mid)">Enrolling: <strong id="dripLeadName">David Thornton</strong></div><div style="display:flex;flex-direction:column;gap:8px"><label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:7px;cursor:pointer"><input type="radio" name="drip" value="newlead" style="accent-color:var(--accent)"><div><div style="font-size:12px;font-weight:600">New Lead Nurture</div><div style="font-size:11px;color:var(--muted)">5 steps · SMS · 14 days</div></div></label><label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:7px;cursor:pointer"><input type="radio" name="drip" value="ratedrop" style="accent-color:var(--accent)"><div><div style="font-size:12px;font-weight:600">Rate Drop Alert</div><div style="font-size:11px;color:var(--muted)">3 steps · SMS · 30 days</div></div></label><label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:7px;cursor:pointer"><input type="radio" name="drip" value="postclose" style="accent-color:var(--accent)"><div><div style="font-size:12px;font-weight:600">Post-Close Referral Ask</div><div style="font-size:11px;color:var(--muted)">3 steps · SMS · 90 days</div></div></label></div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('dripModal')">Cancel</button><button class="btn btn-primary" onclick="enrollDrip()">Enroll in Campaign</button></div></div>
+</div>
+
+<div class="modal-backdrop" id="addLicenseModal">
+  <div class="modal"><div class="modal-head"><span class="modal-title">Add State License</span><button class="modal-close" onclick="closeModal('addLicenseModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><div class="form-row"><label class="form-label">State</label><select class="form-select" id="licenseStateSelect"><option value="">Select a state…</option><option>Alabama (AL)</option><option>Alaska (AK)</option><option>Arizona (AZ)</option><option>Arkansas (AR)</option><option>California (CA)</option><option>Colorado (CO)</option><option>Connecticut (CT)</option><option>Delaware (DE)</option><option>Florida (FL)</option><option>Georgia (GA)</option><option>Hawaii (HI)</option><option>Idaho (ID)</option><option>Illinois (IL)</option><option>Indiana (IN)</option><option>Iowa (IA)</option><option>Kansas (KS)</option><option>Kentucky (KY)</option><option>Louisiana (LA)</option><option>Maine (ME)</option><option>Maryland (MD)</option><option>Massachusetts (MA)</option><option>Michigan (MI)</option><option>Minnesota (MN)</option><option>Mississippi (MS)</option><option>Missouri (MO)</option><option>Montana (MT)</option><option>Nebraska (NE)</option><option>Nevada (NV)</option><option>New Hampshire (NH)</option><option>New Jersey (NJ)</option><option>New Mexico (NM)</option><option>New York (NY)</option><option>North Carolina (NC)</option><option>North Dakota (ND)</option><option>Ohio (OH)</option><option>Oklahoma (OK)</option><option>Oregon (OR)</option><option>Pennsylvania (PA)</option><option>Rhode Island (RI)</option><option>South Carolina (SC)</option><option>South Dakota (SD)</option><option>Tennessee (TN)</option><option>Texas (TX)</option><option>Utah (UT)</option><option>Vermont (VT)</option><option>Virginia (VA)</option><option>Washington (WA)</option><option>West Virginia (WV)</option><option>Wisconsin (WI)</option><option>Wyoming (WY)</option></select></div><div class="form-row"><label class="form-label">License Number</label><input class="form-input" id="licenseNumber" placeholder="e.g. MLB.0100000"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="form-row" style="margin:0"><label class="form-label">Issue Date</label><input class="form-input" type="date" id="licenseIssue"></div><div class="form-row" style="margin:0"><label class="form-label">Expiration Date</label><input class="form-input" type="date" id="licenseExpiry"></div></div><div class="form-row" style="margin-top:12px"><label class="form-label">Status</label><select class="form-select" id="licenseStatus"><option value="active">Active</option><option value="expiring">Expiring Soon</option><option value="expired">Expired</option></select></div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('addLicenseModal')">Cancel</button><button class="btn btn-primary" onclick="addLicense()">Save License</button></div></div>
+</div>
+
+<div class="modal-backdrop" id="inviteUserModal">
+  <div class="modal"><div class="modal-head"><span class="modal-title">Invite New User</span><button class="modal-close" onclick="closeModal('inviteUserModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><div style="padding:10px 12px;background:var(--accent-light);border:1px solid var(--accent-light);border-radius:6px;font-size:11px;color:var(--accent);margin-bottom:14px">User must complete profile setup including NMLS # and state licensing before receiving leads.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="form-row" style="margin:0"><label class="form-label">First Name</label><input class="form-input" placeholder="First"></div><div class="form-row" style="margin:0"><label class="form-label">Last Name</label><input class="form-input" placeholder="Last"></div></div><div class="form-row" style="margin-top:12px"><label class="form-label">Work Email</label><input class="form-input" placeholder="name@company.com"></div><div class="form-row"><label class="form-label">Role</label><select class="form-select"><option>Loan Officer</option><option>Manager</option><option>Admin</option></select></div><div class="form-row"><label class="form-label">Branch</label><select class="form-select"><option>Las Vegas – Main</option><option>Phoenix – Scottsdale</option><option>Los Angeles – Downtown</option></select></div><div class="form-row"><label class="form-label">NMLS # <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="form-input" placeholder="e.g. 1234567"></div></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('inviteUserModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('inviteUserModal');alert('Invitation sent!')">Send Invitation</button></div></div>
+</div>
+
+<div class="modal-backdrop" id="editUserModal">
+  <div class="modal"><div class="modal-head"><span class="modal-title" id="editUserTitle">Edit User</span><button class="modal-close" onclick="closeModal('editUserModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body"><div class="form-row"><label class="form-label">Role</label><select class="form-select" id="editUserRole"><option>Loan Officer</option><option>Manager</option><option>Admin</option></select></div><div class="form-row"><label class="form-label">Leadflow</label><div style="display:flex;align-items:center;gap:10px"><div class="big-toggle on" id="editLeadflowToggle" onclick="this.classList.toggle('on');this.classList.toggle('off')"></div><span style="font-size:12px;color:var(--muted)">Toggle off to pause lead assignments</span></div></div><div class="form-row"><label class="form-label">Daily Lead Cap</label><input class="form-input" value="10" style="width:80px"></div><div class="form-row"><label class="form-label">Branch</label><select class="form-select"><option>Las Vegas – Main</option><option>Phoenix – Scottsdale</option><option>Los Angeles – Downtown</option></select></div><div style="padding:10px 12px;background:var(--amber-bg);border:1px solid var(--amber-mid);border-radius:6px;font-size:11px;color:var(--amber)">Role changes take effect immediately.</div></div><div class="modal-footer"><button class="btn" style="color:var(--red);border-color:var(--red-mid);margin-right:auto" onclick="closeModal('editUserModal')">Deactivate</button><button class="btn btn-ghost" onclick="closeModal('editUserModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('editUserModal');alert('User updated.')">Save Changes</button></div></div>
+</div>
+
+<!-- Bulk assign modal -->
+<div class="modal-backdrop" id="bulkAssignModal">
+  <div class="modal"><div class="modal-head"><span class="modal-title">Assign Leads to LO</span><button class="modal-close" onclick="closeModal('bulkAssignModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="modal-body">
+    <div style="font-size:12px;color:var(--text-mid);margin-bottom:12px">Assigning <strong id="bulkAssignCount">0</strong> leads. Only eligible LOs (active leadflow + licensed in lead state) shown first.</div>
+    <div id="bulkAssignList" style="display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto"></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('bulkAssignModal')">Cancel</button><button class="btn btn-primary" id="bulkAssignBtn" onclick="confirmBulkAssign()" disabled style="opacity:.5">Assign to LO</button></div></div>
+</div>
+
+<!-- Bulk SMS modal -->
+<div class="modal-backdrop" id="bulkSmsModal">
+  <div class="modal" style="width:520px"><div class="modal-head"><span class="modal-title">Bulk SMS</span><button class="modal-close" onclick="closeModal('bulkSmsModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="modal-body">
+    <div style="font-size:12px;color:var(--text-mid);margin-bottom:12px" id="bulkSmsRecipients">Sending to 0 leads</div>
+    <div id="bulkSmsOptoutWarn" style="display:none;padding:8px 12px;background:var(--amber-bg);border:1px solid var(--amber-mid);border-radius:6px;font-size:11px;color:var(--amber);margin-bottom:10px"></div>
+    <textarea id="bulkSmsBody" style="width:100%;height:100px;border:1px solid var(--border);border-radius:6px;padding:10px;font-family:'DM Sans',sans-serif;font-size:12px;resize:vertical;outline:none" placeholder="Type your message…&#10;&#10;Use merge fields to personalize." oninput="updateSmsCount()"></textarea>
+    <div style="display:flex;justify-content:space-between;margin-top:4px"><div style="font-size:10px;color:var(--muted)">Merge: <span style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer" onclick="insertMerge('bulkSmsBody','{first_name}')">{first_name}</span> <span style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer" onclick="insertMerge('bulkSmsBody','{loan_amount}')">{loan_amount}</span> <span style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer" onclick="insertMerge('bulkSmsBody','{lo_name}')">{lo_name}</span></div><div style="font-size:10px;color:var(--muted)" id="bulkSmsCount">0 / 160</div></div>
+    <div style="margin-top:10px;padding:8px 10px;background:var(--accent-light);border:1px solid var(--accent-light);border-radius:5px;font-size:11px;color:var(--accent)">TCPA: Opt-out footer will be appended automatically to first-contact messages. Opted-out contacts are excluded.</div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('bulkSmsModal')">Cancel</button><button class="btn btn-primary" onclick="confirmBulkSms()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Send SMS</button></div></div>
+</div>
+
+<!-- Bulk Email modal -->
+<div class="modal-backdrop" id="bulkEmailModal">
+  <div class="modal" style="width:540px"><div class="modal-head"><span class="modal-title">Bulk Email</span><button class="modal-close" onclick="closeModal('bulkEmailModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="modal-body">
+    <div style="font-size:12px;color:var(--text-mid);margin-bottom:12px" id="bulkEmailRecipients">Sending to 0 leads</div>
+    <div class="form-row"><label class="form-label">Subject</label><input class="form-input" id="bulkEmailSubject" placeholder="e.g. Checking in on your loan — {first_name}"></div>
+    <div class="form-row"><label class="form-label">Body</label><textarea id="bulkEmailBody" style="width:100%;height:120px;border:1px solid var(--border);border-radius:6px;padding:10px;font-family:'DM Sans',sans-serif;font-size:12px;resize:vertical;outline:none" placeholder="Hi {first_name},&#10;&#10;Just wanted to reach out…"></textarea></div>
+    <div style="font-size:10px;color:var(--muted)">Merge: <span style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer" onclick="insertMerge('bulkEmailBody','{first_name}')">{first_name}</span> <span style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer" onclick="insertMerge('bulkEmailBody','{loan_amount}')">{loan_amount}</span> <span style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer" onclick="insertMerge('bulkEmailBody','{lo_name}')">{lo_name}</span></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('bulkEmailModal')">Cancel</button><button class="btn btn-primary" onclick="confirmBulkEmail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Send Email</button></div></div>
+</div>
+
+<script>
+// --- Date ---
+document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+// --- View switching ---
+const viewMeta = {
+  dashboard:{ title:'Dashboard', tabs:['Overview','My Pipeline','Closed Loans'] },
+  leads:    { title:'All Leads',  tabs:['All','New Leads','Nurture','In Process','Closed'] },
+  pipeline: { title:'Pipeline',   tabs:['Board View','List View','Stage Analytics'] },
+  dialer:   { title:'Dialer',     tabs:['Power Dial','Recent Calls','Voicemails'] },
+  sms:      { title:'Messaging',  tabs:['All Messages','Unread','Drip Active'] },
+  calendar: { title:'Google Calendar', tabs:['Today','This Week','Month'] },
+  email:    { title:'Gmail',      tabs:['Inbox','Sent','Follow-ups'] },
+  arive:    { title:'Arive LOS',  tabs:['Active Loans','Pending','Closed'] },
+  settings: { title:'Settings',   tabs:['Profile','Leadflow','Licensing','Notifications','Integrations','Security'] },
+  team:     { title:'Team & Users', tabs:['Team Roster','Lead Override','Audit Log'] },
+  reports:  { title:'Reports',    tabs:['Overview','Pipeline','SMS Activity','Volume'] },
+};
+
+function switchView(id, el) {
+  document.querySelectorAll('.view').forEach(v=>{ v.style.display='none'; v.classList.remove('active'); });
+  const t = document.getElementById('view-'+id);
+  if (t) { t.style.display='flex'; t.classList.add('active'); }
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const meta = viewMeta[id] || {title:id, tabs:[]};
+  document.getElementById('pageTitle').textContent = meta.title;
+  document.getElementById('tabBar').innerHTML = meta.tabs.map((t,i)=>
+    `<div class="tab${i===0?' active':''}" onclick="this.parentNode.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active')">${t}</div>`
+  ).join('');
+}
+
+// Init views
+document.querySelectorAll('.view').forEach(v=>{ v.style.display='none'; v.classList.remove('active'); });
+document.getElementById('view-dashboard').style.display = 'flex';
+document.getElementById('view-dashboard').classList.add('active');
+
+// Task checkboxes
+document.querySelectorAll('.task-checkbox').forEach(cb => {
+  cb.addEventListener('click', function() {
+    const done = this.dataset.done === '1';
+    this.dataset.done = done ? '0' : '1';
+    this.style.background = done ? '' : 'var(--accent)';
+    this.style.borderColor = done ? '' : 'var(--accent)';
+  });
+});
+
+// --- Modals ---
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-backdrop').forEach(b => {
+  b.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+});
+
+// --- SMS ---
+const contactState = {
+  DT: { optedOut:false, newContact:false, name:'David Thornton' },
+  MR: { optedOut:false, newContact:false, name:'Marcus Rivera' },
+  SK: { optedOut:false, newContact:false, name:'Sarah Kim' },
+  PL: { optedOut:false, newContact:false, name:'Priya Lahiri' },
+  RN: { optedOut:true,  newContact:false, name:'Rosa Nguyen' },
+  JW: { optedOut:false, newContact:false, name:'James Weller' },
+};
+let currentAv = 'DT';
+
+const threadMessages = {
+  DT: [{type:'date',text:'Today, 9:08 AM'},{type:'out',time:'9:08',text:'Hi David, this is Jake Morrison with Premier Lending. I saw you were looking into a VA purchase loan — I\'d love to help. Do you have 10 minutes today?\n\nReply STOP to opt out, HELP for info.'},{type:'in',av:'DT',time:'9:14',text:'Thanks for reaching out! What\'s the current rate looking like for VA?'},{type:'out',time:'9:16',text:'Great question — VA rates are around 6.25% for a 30-yr fixed with no down payment required. Can we schedule a quick call?'}],
+  MR: [{type:'date',text:'Today, 8:40 AM'},{type:'out',time:'8:40',text:'Hi Marcus, I still need your last 2 bank statements to move your file forward. Can you send those over today?\n\nReply STOP to opt out.'},{type:'in',av:'MR',time:'8:52',text:'Got it, I\'ll gather the docs today'}],
+  SK: [{type:'date',text:'Yesterday'},{type:'out',time:'2:10 PM',text:'Hi Sarah, your file is with underwriting and looking good. Expected decision in 2–3 days. Let me know if you have questions!'},{type:'in',av:'SK',time:'2:18 PM',text:'Sounds good, see you then!'}],
+  PL: [{type:'date',text:'Yesterday'},{type:'out',time:'3:00 PM',text:'Priya, you are Clear to Close! Closing is confirmed for March 8th. Please bring a valid ID and certified funds.'},{type:'in',av:'PL',time:'3:15 PM',text:'Closing confirmed for the 8th'}],
+  RN: [{type:'date',text:'Mar 3'},{type:'out',time:'10:00 AM',text:'Hi Rosa, just checking in — how\'s the home search going? Rates have been moving and I\'d love to get you pre-approved when you\'re ready.\n\nReply STOP to opt out, HELP for info.'},{type:'in',av:'RN',time:'10:22 AM',text:'We\'re still about 6 months out from being ready'},{type:'stop',time:'10:23 AM',name:'Rosa Nguyen'}],
+  JW: [{type:'date',text:'Mar 2'},{type:'out',time:'1:00 PM',text:'Hi James, your appraisal came in at value — great news! We\'re moving to final underwriting review now.'},{type:'in',av:'JW',time:'1:30 PM',text:'Will the rate be locked before we close?'}],
+};
+
+function renderMessages(av) {
+  const msgs = document.getElementById('smsMessages');
+  const history = threadMessages[av] || [];
+  msgs.innerHTML = history.map(m => {
+    if (m.type === 'date') return `<div style="text-align:center;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin:4px 0">${m.text}</div>`;
+    if (m.type === 'stop') return `<div class="stop-msg"><div class="stop-msg-bubble">${m.name || 'Contact'} replied STOP</div><div class="stop-system-note">All outbound SMS blocked · Drip paused · Logged to compliance record</div></div>`;
+    if (m.type === 'out') return `<div class="msg-row out"><div class="msg-time">${m.time}</div><div class="msg-bubble" style="white-space:pre-line">${m.text}</div></div>`;
+    if (m.type === 'in')  return `<div class="msg-row in"><div class="msg-av">${m.av}</div><div class="msg-bubble">${m.text}</div><div class="msg-time">${m.time}</div></div>`;
+    return '';
+  }).join('');
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function selectThread(el, av, name, phone, id) {
+  document.querySelectorAll('.sms-thread').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentAv = av;
+  document.getElementById('convoAv').textContent = av;
+  document.getElementById('convoName').textContent = name;
+  document.getElementById('convoPhone').textContent = phone + ' · ' + id;
+  document.getElementById('dripLeadName').textContent = name;
+  const cs = contactState[av];
+  const badge = document.getElementById('convoConsentBadge');
+  const optout = document.getElementById('optoutBanner');
+  const overlay = document.getElementById('optoutOverlay');
+  const notice = document.getElementById('consentNotice');
+  if (cs && cs.optedOut) {
+    badge.innerHTML = '<span class="optout-badge">Opted Out</span>';
+    if(optout) optout.style.display = 'block';
+    if(overlay) overlay.style.display = 'flex';
+    if(notice) notice.style.display = 'none';
+  } else {
+    badge.innerHTML = '<span class="consent-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:9px;height:9px"><polyline points="20 6 9 17 4 12"/></svg>Consented</span>';
+    if(optout) optout.style.display = 'none';
+    if(overlay) overlay.style.display = 'none';
+    if(notice) notice.style.display = cs && cs.newContact ? 'block' : 'none';
+  }
+  renderMessages(av);
+}
+
+function sendMessage() {
+  const cs = contactState[currentAv];
+  if (cs && cs.optedOut) { alert('Cannot send — contact has opted out.'); return; }
+  const input = document.getElementById('smsInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (text.toUpperCase() === 'STOP') { triggerStop(currentAv); input.value=''; return; }
+  let sendText = text;
+  if (cs && cs.newContact) { sendText += '\n\nReply STOP to opt out, HELP for info.'; cs.newContact = false; }
+  threadMessages[currentAv] = threadMessages[currentAv] || [];
+  const timeStr = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  threadMessages[currentAv].push({type:'out', time:timeStr, text:sendText});
+  renderMessages(currentAv);
+  input.value = '';
+  document.getElementById('charCount').textContent = '0 / 160';
+}
+
+function triggerStop(av) {
+  if (!contactState[av]) return;
+  contactState[av].optedOut = true;
+  const timeStr = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  threadMessages[av] = threadMessages[av] || [];
+  threadMessages[av].push({type:'stop', time:timeStr, name:contactState[av].name});
+  renderMessages(av);
+  const optout = document.getElementById('optoutBanner');
+  const overlay = document.getElementById('optoutOverlay');
+  if(optout) optout.style.display = 'block';
+  if(overlay) overlay.style.display = 'flex';
+  document.getElementById('convoConsentBadge').innerHTML = '<span class="optout-badge">Opted Out</span>';
+}
+
+function switchSmsTab(tab, el) {
+  document.querySelectorAll('.sms-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  ['canned','drip','compliance'].forEach(p => {
+    const panel = document.getElementById('panel-'+p);
+    if (panel) panel.style.display = p === tab ? 'block' : 'none';
+  });
+}
+
+function openCannedModal() { renderCannedModal(''); openModal('cannedModal'); }
+function filterCannedModal(v) { renderCannedModal(v); }
+
+const cannedData = [
+  {label:'Initial Outreach', tag:'New Lead', text:'Hi {first_name}, this is Jake Morrison with Premier Lending. I saw you were interested in a home loan — do you have a few minutes to connect today?'},
+  {label:'Pre-Approval Ready', tag:'Application', text:'Hi {first_name}! Great news — you\'re pre-approved for up to {amount}. I\'m sending the letter to your email now. Ready to start looking at homes?'},
+  {label:'UW Status Update', tag:'Underwriting', text:'Hi {first_name}, just checking in — your file is with underwriting and looking good. Expected decision within 2–3 business days. Any questions?'},
+  {label:'Clear to Close', tag:'CTC', text:'Great news {first_name} — you\'re Clear to Close! Closing is set for {closing_date}. Please bring a valid ID and certified funds.'},
+  {label:'Rate Drop Alert', tag:'Nurture', text:'Hi {first_name}, rates have moved this week — you might save on your monthly payment. Want me to run a quick refi analysis?'},
+  {label:'Follow-up After Call', tag:'General', text:'Hi {first_name}, just wanted to follow up from our call. I\'m available this week if you have more questions. What day works best?'},
+  {label:'Doc Request', tag:'Processing', text:'Hi {first_name}, I have a few docs still needed: 1) Last 2 pay stubs 2) Last 2 bank statements 3) W-2s. Can you send those over?'},
+];
+
+function renderCannedModal(filter) {
+  const list = document.getElementById('cannedModalList');
+  if(!list) return;
+  const items = cannedData.filter(c => !filter || c.label.toLowerCase().includes(filter.toLowerCase()) || c.text.toLowerCase().includes(filter.toLowerCase()));
+  list.innerHTML = items.map(c => `<div class="canned-item" onclick="insertCanned(${JSON.stringify(c.text)})"><div class="canned-label">${c.label}</div><div class="canned-preview">${c.text.substring(0,80)}…</div><span class="canned-tag">${c.tag}</span></div>`).join('');
+}
+
+function insertCanned(text) {
+  document.getElementById('smsInput').value = text;
+  document.getElementById('charCount').textContent = text.length + ' / 160';
+  closeModal('cannedModal');
+}
+
+function filterCanned(v) {
+  const list = document.getElementById('cannedList');
+  if(!list) return;
+  const items = cannedData.filter(c => !v || c.label.toLowerCase().includes(v.toLowerCase()));
+  list.innerHTML = items.map(c => `<div class="canned-item" onclick="insertCannedDirect(${JSON.stringify(c.text)})"><div class="canned-label">${c.label}</div><div class="canned-preview">${c.text.substring(0,70)}…</div><span class="canned-tag">${c.tag}</span></div>`).join('');
+}
+
+function insertCannedDirect(text) {
+  document.getElementById('smsInput').value = text;
+  document.getElementById('charCount').textContent = text.length + ' / 160';
+}
+
+function enrollDrip() {
+  const sel = document.querySelector('input[name=drip]:checked');
+  const name = document.getElementById('dripLeadName').textContent;
+  if (sel) alert('' + name + ' enrolled in drip campaign. First message sends today.');
+  closeModal('dripModal');
+}
+
+document.querySelectorAll('.drip-toggle').forEach(t => {
+  t.addEventListener('click', function() {
+    this.classList.toggle('on'); this.classList.toggle('off');
+  });
+});
+
+// --- Settings ---
+function switchSettingsTab(tab, el) {
+  document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.settings-nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById('stab-' + tab);
+  if (sec) sec.classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+function toggleLeadflow() {
+  const tog = document.getElementById('leadflowToggle');
+  const bar = document.getElementById('leadflowStatusBar');
+  const txt = document.getElementById('leadflowStatusText');
+  const dot = document.getElementById('leadflowDot');
+  const isOn = tog.classList.contains('on');
+  tog.classList.toggle('on'); tog.classList.toggle('off');
+  if(bar) { bar.className = 'leadflow-status ' + (isOn ? 'off' : 'on'); }
+  if(txt) txt.textContent = isOn ? 'Leadflow Paused' : 'Leadflow Active';
+  if(dot) { dot.style.background = isOn ? 'var(--red)' : 'var(--green)'; }
+}
+
+function toggleOOO() {
+  const tog = document.getElementById('oooToggle');
+  const fields = document.getElementById('oooDateFields');
+  tog.classList.toggle('on'); tog.classList.toggle('off');
+  if(fields) fields.style.display = tog.classList.contains('on') ? 'block' : 'none';
+}
+
+function scheduleOOO() {
+  const start = document.getElementById('oooStart').value;
+  const end   = document.getElementById('oooEnd').value;
+  const note  = (document.getElementById('oooNote')||{}).value || '';
+  if (!start || !end) { alert('Please select both start and return dates.'); return; }
+  const fmt = d => new Date(d + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const activeText = document.getElementById('oooActiveText');
+  if(activeText) activeText.textContent = 'Out of Office: ' + fmt(start) + ' – ' + fmt(end) + (note ? ' · ' + note : '');
+  const activeBar = document.getElementById('oooActiveBar');
+  const activeBadge = document.getElementById('oooActiveBadge');
+  const dateFields = document.getElementById('oooDateFields');
+  if(activeBar) activeBar.style.display = 'block';
+  if(activeBadge) activeBadge.style.display = 'block';
+  if(dateFields) dateFields.style.display = 'none';
+  const tog = document.getElementById('oooToggle');
+  tog.classList.remove('on'); tog.classList.add('off');
+  addAuditEntry({time:'Just now', lead:'—', event:'OOO scheduled ' + fmt(start) + '–' + fmt(end), actor:'Jake Morrison (You)', type:'ooo'});
+  alert('Out-of-office scheduled! Leadflow will auto-pause on ' + fmt(start) + ' and resume on ' + fmt(end) + '.');
+}
+
+function cancelOOO() {
+  const activeBar = document.getElementById('oooActiveBar');
+  const activeBadge = document.getElementById('oooActiveBadge');
+  if(activeBar) activeBar.style.display = 'none';
+  if(activeBadge) activeBadge.style.display = 'none';
+  addAuditEntry({time:'Just now', lead:'—', event:'OOO cancelled', actor:'Jake Morrison (You)', type:'ooo'});
+}
+
+// --- Licensing ---
+const currentLicenses = [
+  {state:'Nevada', abbr:'NV', number:'MLB.0100000', issue:'2024-03-15', expiry:'2027-03-15', status:'active'},
+  {state:'Arizona', abbr:'AZ', number:'AZ-1234567', issue:'2023-11-01', expiry:'2026-11-30', status:'active'},
+  {state:'California', abbr:'CA', number:'CA-DBO1234567', issue:'2023-06-01', expiry:'2026-06-15', status:'expiring'},
+];
+
+const allStates = [
+  ['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],
+  ['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['FL','Florida'],['GA','Georgia'],
+  ['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],
+  ['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],['ME','Maine'],['MD','Maryland'],
+  ['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],['MS','Mississippi'],['MO','Missouri'],
+  ['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],['NH','New Hampshire'],['NJ','New Jersey'],
+  ['NM','New Mexico'],['NY','New York'],['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],
+  ['OK','Oklahoma'],['OR','Oregon'],['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],
+  ['SD','South Dakota'],['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],
+  ['VA','Virginia'],['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming']
+];
+
+function renderLicenses() {
+  const list = document.getElementById('licenseList');
+  if (!list) return;
+  list.innerHTML = currentLicenses.map(lic => {
+    const colors = {
+      active:   {bg:'var(--green-bg)',color:'var(--green)',border:'var(--green-mid)',label:'Active'},
+      expiring: {bg:'var(--amber-bg)',color:'var(--amber)',border:'var(--amber-mid)',label:'Expiring'},
+      expired:  {bg:'var(--red-bg)',  color:'var(--red)',  border:'var(--red-mid)',  label:'Expired'}
+    };
+    const c = colors[lic.status] || colors.active;
+    return `<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--border);border-radius:7px">
+      <div style="width:36px;height:36px;background:${c.bg};border:1px solid ${c.border};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:${c.color};font-family:'DM Mono',monospace;flex-shrink:0">${lic.abbr}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${lic.state}</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:1px">${lic.number} · Exp ${lic.expiry}</div></div>
+      <span style="font-size:10px;font-weight:500;padding:2px 8px;border-radius:4px;background:${c.bg};color:${c.color};border:1px solid ${c.border}">${c.label}</span>
+      <button class="btn btn-ghost btn-sm">Edit</button>
+    </div>`;
+  }).join('');
+}
+
+function renderStateGrid() {
+  const grid = document.getElementById('stateGrid');
+  if (!grid) return;
+  grid.innerHTML = allStates.map(([abbr, name]) => {
+    const lic = currentLicenses.find(l => l.abbr === abbr);
+    let cls = '', expText = '';
+    if (lic) { cls = lic.status; expText = lic.expiry ? lic.expiry.substring(0,7) : ''; }
+    return `<div class="state-chip ${cls}" onclick="openModal('addLicenseModal')">
+      ${cls ? '<div class="state-badge-dot"></div>' : ''}
+      <div class="state-abbr">${abbr}</div>
+      <div class="state-name">${name}</div>
+      ${expText ? `<div class="state-exp" style="color:${cls==='expiring'?'var(--amber)':cls==='expired'?'var(--red)':'var(--muted)'}">${expText}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function addLicense() {
+  const state = document.getElementById('licenseStateSelect').value;
+  const number = document.getElementById('licenseNumber').value;
+  const expiry = document.getElementById('licenseExpiry').value;
+  const status = document.getElementById('licenseStatus').value;
+  if (!state) { alert('Please select a state.'); return; }
+  const abbr = state.match(/\(([A-Z]{2})\)/);
+  const stateName = state.replace(/\s*\([A-Z]{2}\)/, '');
+  currentLicenses.push({state:stateName, abbr:abbr?abbr[1]:'??', number:number||'—', issue:'', expiry:expiry||'—', status:status||'active'});
+  renderLicenses(); renderStateGrid(); closeModal('addLicenseModal');
+  alert('License saved for ' + stateName);
+}
+
+// -- Team tabs --
+function switchTeamTab(tab, el) {
+  document.querySelectorAll('#view-team .tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  ['roster','override','auditlog'].forEach(p => {
+    const panel = document.getElementById('team-panel-' + p);
+    if (panel) panel.style.display = p === tab ? 'flex' : 'none';
+  });
+  if (tab === 'override') renderOverride();
+  if (tab === 'auditlog') renderAuditLog('all');
+}
+
+function openEditUserModal(name, role) {
+  document.getElementById('editUserTitle').textContent = 'Edit — ' + name;
+  document.getElementById('editUserRole').value = role;
+  openModal('editUserModal');
+}
+
+// --- Audit Log ---
+const auditEntries = [
+  {time:'Today 9:22 AM',  lead:'David Thornton #LD-2045', event:'Auto-assigned via round robin',          actor:'System',            type:'assign'},
+  {time:'Today 8:55 AM',  lead:'Marcus Rivera #LD-2041',  event:'Reassigned: Rafael Cruz -> Jake Morrison', actor:'Sandra Lee (Mgr)', type:'override'},
+  {time:'Today 8:10 AM',  lead:'Aisha Patel #LD-2043',    event:'Skipped — LO paused (Rafael Cruz OOO)',  actor:'System',            type:'skip'},
+  {time:'Today 8:10 AM',  lead:'Aisha Patel #LD-2043',    event:'Auto-assigned to Derek Barnes',          actor:'System',            type:'assign'},
+  {time:'Mar 5 4:45 PM',  lead:'—',                       event:'OOO scheduled Mar 10–Mar 14',            actor:'Rafael Cruz',        type:'ooo'},
+  {time:'Mar 5 3:00 PM',  lead:'James Weller #LD-2036',   event:'Manual assignment: -> Marcus Hunt',       actor:'Sandra Lee (Mgr)',   type:'override'},
+  {time:'Mar 5 11:20 AM', lead:'Rosa Nguyen #LD-2033',    event:'Skipped — no licensed LO in TX',         actor:'System',            type:'skip'},
+  {time:'Mar 4 2:15 PM',  lead:'Priya Lahiri #LD-2029',   event:'Auto-assigned via round robin',          actor:'System',            type:'assign'},
+  {time:'Mar 4 9:00 AM',  lead:'—',                       event:'Tanya Novak paused — no active licenses',actor:'System',            type:'ooo'},
+  {time:'Mar 3 5:30 PM',  lead:'Tom Bridger #LD-2031',    event:'Auto-assigned to Anita Pham',            actor:'System',            type:'assign'},
+  {time:'Mar 3 1:00 PM',  lead:'Linda Castillo #LD-2028', event:'Reassigned: Tanya Novak -> Derek Barnes', actor:'Kim Walsh (Admin)',  type:'override'},
+  {time:'Mar 2 10:45 AM', lead:'Sarah Kim #LD-2038',      event:'Auto-assigned via round robin',          actor:'System',            type:'assign'},
+];
+
+function addAuditEntry(entry) { auditEntries.unshift(entry); }
+
+const auditStyle = {
+  assign:   {bg:'var(--accent-light)',color:'var(--accent)', border:'var(--accent-light)', label:'Assignment'},
+  override: {bg:'var(--amber-bg)',    color:'var(--amber)',  border:'var(--amber-mid)',label:'Override'},
+  ooo:      {bg:'var(--amber-bg)',    color:'var(--amber)',  border:'var(--amber-mid)',label:'OOO / Pause'},
+  skip:     {bg:'var(--red-bg)',      color:'var(--red)',    border:'var(--red-mid)',  label:'Skip'},
+};
+
+function renderAuditLog(filter) {
+  const rows = document.getElementById('auditLogRows');
+  if (!rows) return;
+  const filtered = filter === 'all' ? auditEntries : auditEntries.filter(e => e.type === filter);
+  rows.innerHTML = filtered.map(e => {
+    const s = auditStyle[e.type] || auditStyle.assign;
+    return `<div style="display:grid;grid-template-columns:130px 1fr 1.2fr 1fr 90px;gap:8px;padding:9px 16px;border-bottom:1px solid var(--border);font-size:12px" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">${e.time}</div>
+      <div style="font-weight:500;color:var(--text)">${e.lead}</div>
+      <div style="color:var(--text-mid)">${e.event}</div>
+      <div style="color:var(--muted)">${e.actor}</div>
+      <div><span style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;background:${s.bg};color:${s.color};border:1px solid ${s.border}">${s.label}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function filterAudit(type, btn) {
+  document.querySelectorAll('.audit-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAuditLog(type);
+}
+
+// --- Manager Override ---
+const unassignedLeads = [
+  {id:'LD-2047', name:'Christine Moore', state:'TX', loan:'$410K Purchase / Conv', source:'Zillow',      age:'14 min ago'},
+  {id:'LD-2046', name:'Omar Hassan',     state:'TX', loan:'$295K Purchase / FHA',  source:'LendingTree', age:'1 hr ago'},
+  {id:'LD-2044', name:'Brenda Solis',    state:'CO', loan:'$520K Refi / Jumbo',    source:'Website',     age:'2 hr ago'},
+  {id:'LD-2040', name:'Gary Whitmore',   state:'NV', loan:'$375K Purchase / VA',   source:'Zillow',      age:'3 hr ago'},
+];
+const loRoster = [
+  {initials:'JM', name:'Jake Morrison', color:'var(--accent)', states:['NV','AZ','CA'], active:14, status:'on',  cap:10, today:3},
+  {initials:'AP', name:'Anita Pham',    color:'#7c3aed',       states:['CA','WA'],      active:9,  status:'on',  cap:8,  today:4},
+  {initials:'DB', name:'Derek Barnes',  color:'#0891b2',       states:['FL','GA'],      active:7,  status:'on',  cap:12, today:2},
+  {initials:'MH', name:'Marcus Hunt',   color:'#6d28d9',       states:['NV'],           active:3,  status:'on',  cap:10, today:1},
+  {initials:'RC', name:'Rafael Cruz',   color:'#059669',       states:['TX','CO'],      active:11, status:'off', cap:10, today:0},
+  {initials:'TN', name:'Tanya Novak',   color:'#b45309',       states:[],               active:0,  status:'off', cap:10, today:0},
+];
+
+function renderOverride() {
+  const leadList = document.getElementById('overrideLeadList');
+  if (!leadList) return;
+  if (unassignedLeads.length === 0) {
+    leadList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);font-size:12px">No unassigned leads — all caught up!</div>';
+    document.getElementById('unassignedCount').textContent = '0 unassigned';
+    return;
+  }
+  document.getElementById('unassignedCount').textContent = unassignedLeads.length + ' unassigned';
+  leadList.innerHTML = unassignedLeads.map(l => {
+    const eligible = loRoster.filter(lo => lo.status === 'on' && lo.states.includes(l.state));
+    const ineligible = loRoster.filter(lo => lo.status === 'off' || !lo.states.includes(l.state));
+    return `<div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+          <span style="font-size:13px;font-weight:500">${l.name}</span>
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">#${l.id}</span>
+          <span class="badge badge-app" style="font-size:9px">${l.state}</span>
+          <span style="font-size:10px;font-weight:500;color:var(--amber);background:var(--amber-bg);padding:1px 6px;border-radius:3px;border:1px solid var(--amber-mid)">${l.source}</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted)">${l.loan} · Received ${l.age}</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <select class="form-select" style="width:170px;height:28px;font-size:11px" id="sel-${l.id}">
+          <option value="">Assign to LO…</option>
+          ${eligible.map(lo=>`<option value="${lo.name}">${lo.name} (${lo.today}/${lo.cap} today)</option>`).join('')}
+          ${ineligible.length ? '<option disabled>--- Ineligible ---</option>' + ineligible.map(lo=>`<option value="${lo.name}">${lo.name} — ${lo.status==='off'?'paused':'unlicensed in '+l.state}</option>`).join('') : ''}
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="assignOverride('${l.id}','${l.name}','${l.state}')">Assign</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const loList = document.getElementById('loAvailList');
+  if (!loList) return;
+  loList.innerHTML = loRoster.map(lo => `
+    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div style="width:28px;height:28px;border-radius:50%;background:${lo.color};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:white;flex-shrink:0;font-family:'DM Mono',monospace">${lo.initials}</div>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:500">${lo.name}</div>
+        <div style="font-size:10px;margin-top:1px">${lo.states.length ? lo.states.map(s=>`<span style="background:var(--accent-light);color:var(--accent);padding:0 4px;border-radius:2px;font-size:9px;margin-right:2px">${s}</span>`).join('') : '<span style="color:var(--red)">No active licenses</span>'}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="leadflow-pill ${lo.status}" style="margin-bottom:3px"><div class="leadflow-pill-dot"></div>${lo.status==='on'?'Active':'Paused'}</div>
+        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">${lo.today}/${lo.cap} today · ${lo.active} active</div>
+      </div>
+    </div>`).join('');
+}
+
+function assignOverride(leadId, leadName, state) {
+  const sel = document.getElementById('sel-' + leadId);
+  const loName = sel ? sel.value : '';
+  if (!loName) { alert('Please select an LO to assign to.'); return; }
+  const lo = loRoster.find(l => l.name === loName);
+  if (lo && lo.status === 'off') { if (!confirm(loName + ' has leadflow paused. Override and assign anyway?')) return; }
+  if (lo && !lo.states.includes(state)) { if (!confirm(loName + ' is not licensed in ' + state + '. Override and assign anyway?')) return; }
+  addAuditEntry({time:'Just now', lead:leadName + ' #' + leadId, event:'Override assignment -> ' + loName, actor:'Sandra Lee (Mgr)', type:'override'});
+  const idx = unassignedLeads.findIndex(l => l.id === leadId);
+  if (idx > -1) unassignedLeads.splice(idx, 1);
+  alert('' + leadName + ' assigned to ' + loName + '. Logged to audit trail.');
+  renderOverride();
+}
+
+// -- Leads table --
+const leadsData = [
+  {id:2045, name:'David Thornton',  type:'VA Purchase',  amount:'$425K', stage:'new',  lo:'Jake Morrison', state:'NV', source:'Zillow',       followup:'Today',   optedOut:false},
+  {id:2044, name:'Marcus Rivera',   type:'Conv Purchase',amount:'$380K', stage:'app',  lo:'Jake Morrison', state:'CA', source:'LendingTree',   followup:'Today',   optedOut:false},
+  {id:2043, name:'Sarah Kim',       type:'FHA Purchase', amount:'$290K', stage:'uw',   lo:'Anita Pham',    state:'CA', source:'Website',       followup:'Mar 8',   optedOut:false},
+  {id:2042, name:'Priya Lahiri',    type:'Conv Refi',    amount:'$510K', stage:'ctc',  lo:'Jake Morrison', state:'NV', source:'Referral',      followup:'Mar 8',   optedOut:false},
+  {id:2041, name:'Rosa Nguyen',     type:'USDA Purchase',amount:'$245K', stage:'nurture',lo:'Derek Barnes',state:'TX', source:'Zillow',        followup:'Mar 12',  optedOut:true},
+  {id:2040, name:'James Weller',    type:'VA Purchase',  amount:'$460K', stage:'proc', lo:'Marcus Hunt',   state:'NV', source:'Google Ads',    followup:'Mar 9',   optedOut:false},
+  {id:2039, name:'Christine Moore', type:'Conv Purchase',amount:'$410K', stage:'new',  lo:'Unassigned',    state:'TX', source:'Zillow',        followup:'Today',   optedOut:false},
+  {id:2038, name:'Omar Hassan',     type:'FHA Purchase', amount:'$295K', stage:'new',  lo:'Unassigned',    state:'TX', source:'LendingTree',   followup:'Today',   optedOut:false},
+  {id:2037, name:'Brenda Solis',    type:'Jumbo Refi',   amount:'$520K', stage:'nurture',lo:'Rafael Cruz', state:'CO', source:'Website',       followup:'Mar 15',  optedOut:false},
+  {id:2036, name:'Gary Whitmore',   type:'VA Purchase',  amount:'$375K', stage:'new',  lo:'Jake Morrison', state:'NV', source:'Zillow',        followup:'Today',   optedOut:false},
+];
+
+const stageMeta = {
+  nurture: {label:'Nurture',     color:'#94a3b8'},
+  new:     {label:'New Lead',    color:'var(--purple)'},
+  app:     {label:'Application', color:'var(--accent)'},
+  proc:    {label:'Processing',  color:'var(--amber)'},
+  uw:      {label:'Underwriting',color:'#b45309'},
+  ctc:     {label:'Clear to Close',color:'var(--green)'},
+};
+
+let currentLeadsSearch = '';
+let currentLeadsFilter = 'all';
+let selectedLeadIds = new Set();
+
+function getFilteredLeads() {
+  return leadsData.filter(l => {
+    if (currentLeadsFilter !== 'all' && l.stage !== currentLeadsFilter) return false;
+    if (currentLeadsSearch) {
+      const q = currentLeadsSearch.toLowerCase();
+      if (!l.name.toLowerCase().includes(q) && !l.lo.toLowerCase().includes(q) && !l.source.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function renderLeadsTable() {
+  const tbody = document.getElementById('leadsBody');
+  if (!tbody) return;
+  const leads = getFilteredLeads();
+  document.getElementById('leadCount').textContent = leads.length;
+  tbody.innerHTML = leads.map(l => {
+    const sm = stageMeta[l.stage] || {label:l.stage, color:'#888'};
+    const sel = selectedLeadIds.has(l.id);
+    return `<tr class="${sel?'selected-row':''}">
+      <td><input type="checkbox" class="lead-check" ${sel?'checked':''} onchange="toggleLeadSelect(${l.id},this)"></td>
+      <td><div style="font-weight:500;font-size:12px">${l.name}</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">#LD-${l.id}</div></td>
+      <td style="font-size:12px">${l.type}</td>
+      <td style="font-size:12px;font-family:'DM Mono',monospace">${l.amount}</td>
+      <td><span style="font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;background:${sm.color}20;color:${sm.color};border:1px solid ${sm.color}40">${sm.label}</span></td>
+      <td style="font-size:12px">${l.lo}</td>
+      <td><span style="background:var(--accent-light);color:var(--accent);padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600">${l.state}</span></td>
+      <td style="font-size:11px;color:var(--muted)">${l.source}</td>
+      <td style="font-size:11px">${l.followup}</td>
+      <td style="font-size:10px;font-family:'DM Mono',monospace;color:var(--muted)">#LD-${l.id}</td>
+      <td><button class="btn btn-ghost btn-sm" style="height:24px;font-size:10px">Open</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleLeadSelect(id, cb) {
+  if (cb.checked) selectedLeadIds.add(id); else selectedLeadIds.delete(id);
+  updateBulkBar();
+  renderLeadsTable();
+}
+
+function toggleSelectAll(cb) {
+  const leads = getFilteredLeads();
+  leads.forEach(l => cb.checked ? selectedLeadIds.add(l.id) : selectedLeadIds.delete(l.id));
+  updateBulkBar();
+  renderLeadsTable();
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulkBar');
+  const cnt = document.getElementById('selCount');
+  if (bar) bar.style.display = selectedLeadIds.size > 0 ? 'flex' : 'none';
+  if (cnt) cnt.textContent = selectedLeadIds.size;
+}
+
+function clearSelection() {
+  selectedLeadIds.clear();
+  updateBulkBar();
+  renderLeadsTable();
+}
+
+function setLeadsFilter(f, el) {
+  currentLeadsFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderLeadsTable();
+}
+
+function filterLeads(v) { currentLeadsSearch = v; renderLeadsTable(); }
+
+// -- Bulk assign --
+let selectedBulkLo = null;
+
+function openBulkAssign() {
+  document.getElementById('bulkAssignCount').textContent = selectedLeadIds.size;
+  const list = document.getElementById('bulkAssignList');
+  selectedBulkLo = null;
+  document.getElementById('bulkAssignBtn').disabled = true;
+  document.getElementById('bulkAssignBtn').style.opacity = '.5';
+  list.innerHTML = loRoster.map(lo => {
+    const eligible = lo.status === 'on' && lo.states.length > 0;
+    return `<div class="bulk-assign-item ${eligible?'':'ineligible'}" onclick="selectBulkLo('${lo.name}',this)" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--border);border-radius:7px;cursor:pointer;transition:all .1s;${eligible?'':'opacity:.5'}">
+      <div style="width:32px;height:32px;border-radius:50%;background:${lo.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:white;font-family:'DM Mono',monospace;flex-shrink:0">${lo.initials}</div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:500">${lo.name}</div><div style="font-size:10px;color:var(--muted)">${lo.states.join(', ')||'No licenses'} · ${lo.today}/${lo.cap} today</div></div>
+      <div class="leadflow-pill ${lo.status}" style="flex-shrink:0"><div class="leadflow-pill-dot"></div>${lo.status==='on'?'Active':'Paused'}</div>
+      <div style="width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .1s" class="assign-check"></div>
+    </div>`;
+  }).join('');
+  openModal('bulkAssignModal');
+}
+
+function selectBulkLo(name, el) {
+  document.querySelectorAll('.bulk-assign-item').forEach(i => {
+    i.style.borderColor = 'var(--border)';
+    i.style.background = '';
+    i.querySelector('.assign-check').style.background = '';
+    i.querySelector('.assign-check').style.borderColor = 'var(--border)';
+  });
+  el.style.borderColor = 'var(--accent)';
+  el.style.background = 'var(--accent-light)';
+  el.querySelector('.assign-check').style.background = 'var(--accent)';
+  el.querySelector('.assign-check').style.borderColor = 'var(--accent)';
+  selectedBulkLo = name;
+  document.getElementById('bulkAssignBtn').disabled = false;
+  document.getElementById('bulkAssignBtn').style.opacity = '1';
+}
+
+function confirmBulkAssign() {
+  if (!selectedBulkLo) return;
+  const count = selectedLeadIds.size;
+  addAuditEntry({time:'Just now', lead:count + ' leads (bulk)', event:'Bulk assigned -> ' + selectedBulkLo, actor:'Sandra Lee (Mgr)', type:'override'});
+  leadsData.forEach(l => { if(selectedLeadIds.has(l.id)) l.lo = selectedBulkLo; });
+  alert('' + count + ' leads assigned to ' + selectedBulkLo + '. Logged to audit trail.');
+  clearSelection();
+  closeModal('bulkAssignModal');
+  renderLeadsTable();
+}
+
+// --- Bulk SMS ---
+function insertMerge(fieldId, tag) {
+  const el = document.getElementById(fieldId);
+  if (!el) return;
+  const start = el.selectionStart, end = el.selectionEnd;
+  el.value = el.value.substring(0,start) + tag + el.value.substring(end);
+  el.selectionStart = el.selectionEnd = start + tag.length;
+  el.focus();
+}
+
+function updateSmsCount() {
+  const body = document.getElementById('bulkSmsBody');
+  const cnt = document.getElementById('bulkSmsCount');
+  if (body && cnt) cnt.textContent = body.value.length + ' / 160';
+}
+
+function openBulkSms() {
+  const leads = leadsData.filter(l => selectedLeadIds.has(l.id));
+  const optouts = leads.filter(l => l.optedOut).length;
+  document.getElementById('bulkSmsRecipients').textContent = 'Sending to ' + leads.length + ' leads (' + (leads.length - optouts) + ' eligible)';
+  const warn = document.getElementById('bulkSmsOptoutWarn');
+  if (optouts > 0) { warn.style.display = 'block'; warn.textContent = optouts + ' opted-out contact(s) will be excluded.'; }
+  else { warn.style.display = 'none'; }
+  openModal('bulkSmsModal');
+}
+
+function confirmBulkSms() {
+  const body = document.getElementById('bulkSmsBody').value.trim();
+  if (!body) { alert('Please enter a message.'); return; }
+  const leads = leadsData.filter(l => selectedLeadIds.has(l.id) && !l.optedOut);
+  alert('SMS queued for ' + leads.length + ' leads.');
+  document.getElementById('bulkSmsBody').value = '';
+  clearSelection();
+  closeModal('bulkSmsModal');
+}
+
+// --- Bulk Email ---
+function openBulkEmail() {
+  const leads = leadsData.filter(l => selectedLeadIds.has(l.id));
+  document.getElementById('bulkEmailRecipients').textContent = 'Sending to ' + leads.length + ' leads';
+  openModal('bulkEmailModal');
+}
+
+function confirmBulkEmail() {
+  const subject = document.getElement('bulkEmailSubject').value.trim();
+  const body = document.getElementById('bulkEmailBody').value.trim();
+  if (!subject || !body) { alert('Please enter a subject and body.'); return; }
+  const leads = leadsData.filter(l => selectedLeadIds.has(l.id));
+  alert('Email queued for ' + leads.length + ' leads.');
+  document.getElementById('bulkEmailSubject').value = '';
+  document.getElementById('bulkEmailBody').value = '';
+  clearSelection();
+  closeModal('bulkEmailModal');
+}
+
+function openBulkDrip() {
+  alert('Bulk Drip: ' + selectedLeadIds.size + ' leads will be enrolled. Select a campaign below.');
+  openModal('dripModal');
+}
+
+// --- Init ---
+
+// --- Email ---
+function showEmail(el, from, subject, fullFrom, time, body) {
+  document.querySelectorAll('.email-row').forEach(r => r.classList.remove('active-email'));
+  el.classList.add('active-email');
+  el.classList.remove('unread');
+  document.getElementById('emailPane').innerHTML = `
+    <div style="padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0">
+      <div style="font-size:15px;font-weight:600;margin-bottom:8px">${subject}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:12px;font-weight:500">${from}</div>
+          <div style="font-size:11px;color:var(--muted)">${fullFrom} &nbsp;·&nbsp; ${time}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm">Reply</button>
+          <button class="btn btn-ghost btn-sm">Forward</button>
+        </div>
+      </div>
+    </div>
+    <div style="padding:20px;font-size:13px;line-height:1.7;color:var(--text-mid);flex:1;overflow-y:auto">${body.replace(/\n/g,'<br>')}</div>
+    <div style="padding:12px 20px;border-top:1px solid var(--border);flex-shrink:0">
+      <textarea placeholder="Reply to ${from}..." style="width:100%;height:80px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);resize:none;outline:none"></textarea>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn btn-primary btn-sm">Send Reply</button></div>
+    </div>
+  `;
+}
+
+window.addEventListener('load', function() {
+  renderMessages('DT');
+  renderCannedModal('');
+  filterCanned('');
+  renderLicenses();
+  renderStateGrid();
+  renderLeadsTable();
+});
+</script>
+</body>
+</html>
