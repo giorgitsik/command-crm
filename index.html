@@ -1669,6 +1669,10 @@ leadsData.forEach(l => {
   l.timezone = l.timezone || stateTimezoneMap[l.state] || 'America/Chicago';
   l.externalLeadId = l.externalLeadId || `EXT-${l.id}`;
   l.internalLeadId = l.internalLeadId || `INT-${l.id}`;
+});
+
+// Keep extended lead-info defaults in a separate pass to reduce merge conflicts with base branch.
+leadsData.forEach(l => {
   l.city = l.city || '—';
   l.zip = l.zip || '';
   l.county = l.county || '';
